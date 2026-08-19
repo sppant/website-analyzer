@@ -87,7 +87,7 @@ function App() {
       setIsLoading(true);
 
       const response = await fetch(
-        "http://localhost:3000/api/analyze",
+        `${import.meta.env.VITE_API_URL}/api/analyze`,
         {
           method: "POST",
           headers: {
