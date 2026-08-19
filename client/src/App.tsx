@@ -44,10 +44,7 @@ function App() {
         <section>
           <ScoreCard score={result.score} />
 
-          <ResultSummary
-            url={result.url}
-            issues={sortedIssues}
-          />
+          <ResultSummary url={result.url} issues={sortedIssues} />
 
           <SeoAnalysis seo={result.seo} />
 
