@@ -1,6 +1,8 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import * as cheerio from "cheerio";
+import dns from "node:dns/promises";
+import ipaddr from "ipaddr.js";
 
 import { analyzeSeo, calculateSeoScore } from "./analyzer/seoRules.js";
 
@@ -9,34 +11,131 @@ const app = Fastify({
 });
 
 await app.register(cors, {
-  origin: ["http://localhost:5175", "https://seo.webxdevelop.com"],
+  origin: ["http://localhost:5173", "https://seo.webxdevelop.com"],
 });
 
 const USER_AGENT = "WebsiteSEOOpportunityAnalyzer/1.0";
 
+/**
+ * Returns true only if `url` is http(s), has no embedded credentials,
+ * and every resolved IP address is a public unicast address (i.e. not
+ * private, loopback, link-local, carrier-grade NAT, reserved, etc).
+ *
+ * Defined at module scope (not inside the route handler) so it's
+ * reachable from fetchWithTimeout below, which revalidates it on
+ * every redirect hop.
+ */
+async function isSafeUrl(url: string): Promise<boolean> {
+  let parsedUrl: URL;
+
+  try {
+    parsedUrl = new URL(url);
+  } catch {
+    return false;
+  }
+
+  if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+    return false;
+  }
+
+  if (parsedUrl.username || parsedUrl.password) {
+    return false;
+  }
+
+  const hostname = parsedUrl.hostname;
+
+  if (!hostname) {
+    return false;
+  }
+
+  // Remove brackets around IPv6 addresses
+  const normalizedHostname = hostname.replace(/^\[|\]$/g, "");
+
+  // If the hostname itself is an IP address, validate it directly
+  if (ipaddr.isValid(normalizedHostname)) {
+    const address = ipaddr.parse(normalizedHostname);
+
+    return address.range() === "unicast";
+  }
+
+  // Resolve hostname and make sure ALL resolved addresses are public
+  try {
+    const addresses = await dns.lookup(normalizedHostname, {
+      all: true,
+    });
+
+    if (!addresses.length) {
+      return false;
+    }
+
+    for (const { address } of addresses) {
+      if (!ipaddr.isValid(address)) {
+        return false;
+      }
+
+      const parsedAddress = ipaddr.parse(address);
+
+      if (parsedAddress.range() !== "unicast") {
+        return false;
+      }
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function fetchWithTimeout(
   url: string,
   timeout = 10000,
+  maxRedirects = 5,
 ): Promise<Response | null> {
-  const controller = new AbortController();
+  let currentUrl = url;
 
-  const timer = setTimeout(() => {
-    controller.abort();
-  }, timeout);
+  for (let redirectCount = 0; redirectCount <= maxRedirects; redirectCount++) {
+    const safe = await isSafeUrl(currentUrl);
 
-  try {
-    return await fetch(url, {
-      headers: {
-        "User-Agent": USER_AGENT,
-      },
-      signal: controller.signal,
-      redirect: "follow",
-    });
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timer);
+    if (!safe) {
+      return null;
+    }
+
+    const controller = new AbortController();
+
+    const timer = setTimeout(() => {
+      controller.abort();
+    }, timeout);
+
+    try {
+      const response = await fetch(currentUrl, {
+        headers: {
+          "User-Agent": USER_AGENT,
+        },
+        signal: controller.signal,
+        redirect: "manual",
+      });
+
+      // Not a redirect
+      if (response.status < 300 || response.status >= 400) {
+        return response;
+      }
+
+      const location = response.headers.get("location");
+
+      if (!location) {
+        return response;
+      }
+
+      // Resolve relative redirects
+      currentUrl = new URL(location, currentUrl).href;
+    } catch {
+      return null;
+    } finally {
+      clearTimeout(timer);
+    }
   }
+
+  return null;
 }
 
 app.get("/api/health", async () => {
@@ -68,6 +167,18 @@ app.post("/api/analyze", async (request, reply) => {
     if (!["http:", "https:"].includes(parsedUrl.protocol)) {
       return reply.status(400).send({
         error: "Only HTTP and HTTPS URLs are supported.",
+      });
+    }
+
+    if (parsedUrl.username || parsedUrl.password) {
+      return reply.status(400).send({
+        error: "URLs containing credentials are not supported.",
+      });
+    }
+
+    if (!(await isSafeUrl(parsedUrl.href))) {
+      return reply.status(400).send({
+        error: "This URL cannot be analyzed.",
       });
     }
 
