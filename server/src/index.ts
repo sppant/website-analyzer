@@ -9,7 +9,7 @@ const app = Fastify({
 });
 
 await app.register(cors, {
-  origin: "https://seo.webxdevelop.com",
+  origin: ["http://localhost:5175", "https://seo.webxdevelop.com"],
 });
 
 const USER_AGENT = "WebsiteSEOOpportunityAnalyzer/1.0";
