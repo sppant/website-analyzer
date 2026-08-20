@@ -20,6 +20,9 @@ await app.register(cors, {
 });
 
 const USER_AGENT = "WebsiteSEOOpportunityAnalyzer/1.0";
+const MAX_HTML_BYTES = 5 * 1024 * 1024;
+const MAX_ROBOTS_BYTES = 1 * 1024 * 1024;
+const MAX_SITEMAP_BYTES = 5 * 1024 * 1024;
 
 /**
  * Returns true only if `url` is http(s), has no embedded credentials,
@@ -89,6 +92,62 @@ async function isSafeUrl(url: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+async function readResponseWithLimit(
+  response: Response,
+  maxBytes: number,
+): Promise<string | null> {
+  const contentLength = response.headers.get("content-length");
+
+  if (contentLength) {
+    const declaredSize = Number(contentLength);
+
+    if (Number.isFinite(declaredSize) && declaredSize > maxBytes) {
+      return null;
+    }
+  }
+
+  if (!response.body) {
+    return null;
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+
+  let totalBytes = 0;
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+
+      if (done) {
+        break;
+      }
+
+      totalBytes += value.byteLength;
+
+      if (totalBytes > maxBytes) {
+        await reader.cancel();
+        return null;
+      }
+
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const combined = new Uint8Array(totalBytes);
+
+  let offset = 0;
+
+  for (const chunk of chunks) {
+    combined.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  return new TextDecoder().decode(combined);
 }
 
 async function fetchWithTimeout(
@@ -214,10 +273,15 @@ app.post(
         });
       }
 
-      const html = await response.text();
+      const html = await readResponseWithLimit(response, MAX_HTML_BYTES);
+
+      if (html === null) {
+        return reply.status(400).send({
+          error: "The website response is too large to analyze.",
+        });
+      }
 
       const $ = cheerio.load(html);
-
       /*
        * Basic SEO
        */
@@ -289,47 +353,50 @@ app.post(
       let robotsTxtBlocksAll = false;
 
       if (robotsResponse && robotsResponse.ok) {
-        robotsTxt = true;
+        const robotsText = await readResponseWithLimit(
+          robotsResponse,
+          MAX_ROBOTS_BYTES,
+        );
 
-        const robotsText = await robotsResponse.text();
+        if (robotsText !== null) {
+          robotsTxt = true;
 
-        const normalizedRobots = robotsText.toLowerCase();
+          const normalizedRobots = robotsText.toLowerCase();
 
-        robotsTxtHasSitemap = normalizedRobots.includes("sitemap:");
+          robotsTxtHasSitemap = normalizedRobots.includes("sitemap:");
 
-        const lines = robotsText.split(/\r?\n/);
+          const lines = robotsText.split(/\r?\n/);
 
-        let currentUserAgent = "";
+          let currentUserAgent = "";
 
-        for (const rawLine of lines) {
-          const line = rawLine.trim();
+          for (const rawLine of lines) {
+            const line = rawLine.trim();
 
-          if (!line || line.startsWith("#")) {
-            continue;
-          }
+            if (!line || line.startsWith("#")) {
+              continue;
+            }
 
-          const separator = line.indexOf(":");
+            const separator = line.indexOf(":");
 
-          if (separator === -1) {
-            continue;
-          }
+            if (separator === -1) {
+              continue;
+            }
 
-          const directive = line.slice(0, separator).trim().toLowerCase();
+            const directive = line.slice(0, separator).trim().toLowerCase();
+            const value = line.slice(separator + 1).trim();
 
-          const value = line.slice(separator + 1).trim();
+            if (directive === "user-agent") {
+              currentUserAgent = value.toLowerCase();
+              continue;
+            }
 
-          if (directive === "user-agent") {
-            currentUserAgent = value.toLowerCase();
-
-            continue;
-          }
-
-          if (
-            directive === "disallow" &&
-            currentUserAgent === "*" &&
-            value === "/"
-          ) {
-            robotsTxtBlocksAll = true;
+            if (
+              directive === "disallow" &&
+              currentUserAgent === "*" &&
+              value === "/"
+            ) {
+              robotsTxtBlocksAll = true;
+            }
           }
         }
       }
@@ -341,21 +408,26 @@ app.post(
       let sitemapUrlCount = 0;
 
       if (sitemapResponse && sitemapResponse.ok) {
-        const sitemapText = await sitemapResponse.text();
+        const sitemapText = await readResponseWithLimit(
+          sitemapResponse,
+          MAX_SITEMAP_BYTES,
+        );
 
-        const contentType = sitemapResponse.headers.get("content-type") || "";
+        if (sitemapText !== null) {
+          const contentType = sitemapResponse.headers.get("content-type") || "";
 
-        const looksLikeXml =
-          contentType.includes("xml") || sitemapText.trim().startsWith("<");
+          const looksLikeXml =
+            contentType.includes("xml") || sitemapText.trim().startsWith("<");
 
-        if (looksLikeXml) {
-          sitemapXml = true;
+          if (looksLikeXml) {
+            sitemapXml = true;
 
-          const sitemap$ = cheerio.load(sitemapText, {
-            xmlMode: true,
-          });
+            const sitemap$ = cheerio.load(sitemapText, {
+              xmlMode: true,
+            });
 
-          sitemapUrlCount = sitemap$("url").length;
+            sitemapUrlCount = sitemap$("url").length;
+          }
         }
       }
 
