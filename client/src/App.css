@@ -920,7 +920,6 @@ article ul {
   line-height: 1.65;
 }
 
-
 /* =========================================
    TOP FIXES
 ========================================= */
@@ -929,11 +928,7 @@ article ul {
   padding: 28px;
 
   background:
-    linear-gradient(
-      135deg,
-      rgba(66, 245, 141, 0.045),
-      transparent 45%
-    ),
+    linear-gradient(135deg, rgba(66, 245, 141, 0.045), transparent 45%),
     var(--surface);
 
   border: 1px solid var(--border);
@@ -1089,7 +1084,6 @@ article ul {
   }
 }
 
-
 /* =========================================
    SEO HEALTH BREAKDOWN
 ========================================= */
@@ -1230,7 +1224,6 @@ article ul {
     grid-template-columns: 1fr;
   }
 }
-
 
 /* =========================================
    GOOGLE SEARCH PREVIEW
@@ -1490,3 +1483,180 @@ article ul {
     font-size: 11px;
   }
 }
+
+/* =========================================
+   PAGES
+========================================= */
+
+.section-eyebrow {
+  margin: 0 0 10px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.feature-grid-page {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 50px;
+}
+
+.feature-grid-page article {
+  min-height: 150px;
+}
+
+.feature-grid-page article h2,
+.about-page article h2 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: -0.4px;
+}
+
+.feature-grid-page article p,
+.about-page article p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.about-page {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 50px;
+}
+
+.about-page article {
+  min-height: 180px;
+}
+
+.nav-links a.active {
+  color: #ffffff;
+  background: #111914;
+}
+
+@media (max-width: 700px) {
+  .feature-grid-page,
+  .about-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+.top-nav {
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(100% - 32px, 1120px);
+  margin: 16px auto 0;
+  padding: 10px 12px 10px 16px;
+  background: rgba(9, 15, 12, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.brand img {
+  width: 30px;
+  height: 30px;
+  display: block;
+  border-radius: 7px;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links a {
+  padding: 8px 11px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+  background: #111914;
+}
+
+.nav-links a.active {
+  color: #ffffff;
+  background: #111914;
+}
+
+.nav-links .nav-cta {
+  margin-left: 6px;
+  padding: 9px 14px;
+  color: #07100b;
+  background: var(--green);
+  font-weight: 800;
+}
+
+.nav-links .nav-cta:hover {
+  color: #07100b;
+  background: #5cff9a;
+}
+
+@media (max-width: 700px) {
+  .top-nav {
+    width: min(100% - 24px, 1120px);
+    padding: 9px 10px;
+  }
+
+  .brand span {
+    display: none;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    padding: 8px 7px;
+    font-size: 10px;
+  }
+
+  .nav-links .nav-cta {
+    padding: 9px 11px;
+  }
+}
+
+.section-eyebrow {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+

@@ -1,53 +1,44 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router-dom";
 
 import "./App.css";
 
-import AnalyzerForm from "./components/AnalyzerForm";
-import FeatureHighlights from "./components/FeatureHighlights";
-import HowItWorks from "./components/HowItWorks";
-import ResultsDashboard from "./components/results/ResultsDashboard";
+import AnalyzerPage from "./pages/AnalyzerPage";
+import FeaturesPage from "./pages/FeaturesPage";
+import AboutPage from "./pages/AboutPage";
 
-import { useSeoAnalyzer } from "./hooks/useSeoAnalyzer";
+function Navigation() {
+  return (
+    <nav className="top-nav" aria-label="Main navigation">
+      <Link to="/" className="brand">
+        <img src="/logo.png" alt="" />
+        <span>SEO Opportunity Analyzer</span>
+      </Link>
+
+      <div className="nav-links">
+        <NavLink to="/features">Features</NavLink>
+        <NavLink to="/about">About</NavLink>
+
+        <Link to="/" className="nav-cta">
+          Analyze Website
+        </Link>
+      </div>
+    </nav>
+  );
+}
 
 function App() {
-  const [url, setUrl] = useState("");
-
-  const { result, error, isLoading, analyze } = useSeoAnalyzer();
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    analyze(url);
-  }
-
   return (
-    <main>
-      <header>
-        <h1>Website SEO Opportunity Analyzer</h1>
+    <BrowserRouter>
+      <Navigation />
 
-        <p>
-          Find the biggest opportunities to improve your website.
-        </p>
-      </header>
-
-      <AnalyzerForm
-        url={url}
-        isLoading={isLoading}
-        error={error}
-        onUrlChange={setUrl}
-        onSubmit={handleSubmit}
-      />
-
-      {!result && (
-        <>
-          <FeatureHighlights />
-
-          <HowItWorks />
-        </>
-      )}
-
-      {result && <ResultsDashboard result={result} />}
-    </main>
+      <main>
+        <Routes>
+          <Route path="/" element={<AnalyzerPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }
 
