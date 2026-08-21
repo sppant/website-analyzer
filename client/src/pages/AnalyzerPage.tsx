@@ -6,6 +6,8 @@ import FeatureHighlights from "../components/FeatureHighlights";
 import HowItWorks from "../components/HowItWorks";
 import ProductPreview from "../components/ProductPreview";
 import BusinessBenefits from "../components/BusinessBenefits";
+import FAQ from "../components/FAQ";
+import FAQSchema from "../components/FAQSchema";
 import ResultsDashboard from "../components/results/ResultsDashboard";
 
 import { useSeoAnalyzer } from "../hooks/useSeoAnalyzer";
@@ -53,6 +55,9 @@ function AnalyzerPage() {
           <div id="how-it-works">
             <HowItWorks />
           </div>
+
+          <FAQ />
+          <FAQSchema />
         </>
       )}
 
