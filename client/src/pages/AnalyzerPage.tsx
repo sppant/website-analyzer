@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import AnalyzerForm from "../components/AnalyzerForm";
 import FeatureHighlights from "../components/FeatureHighlights";
 import HowItWorks from "../components/HowItWorks";
+import ProductPreview from "../components/ProductPreview";
 import ResultsDashboard from "../components/results/ResultsDashboard";
 
 import { useSeoAnalyzer } from "../hooks/useSeoAnalyzer";
@@ -40,6 +41,8 @@ function AnalyzerPage() {
 
       {!result && (
         <>
+          <ProductPreview />
+
           <div id="features">
             <FeatureHighlights />
           </div>
