@@ -5,6 +5,7 @@ import "./App.css";
 import AnalyzerPage from "./pages/AnalyzerPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import AboutPage from "./pages/AboutPage";
+import LegalPage from "./pages/LegalPage";
 import Footer from "./components/Footer";
 
 function Navigation() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<AnalyzerPage />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/legal" element={<LegalPage />} />
         </Routes>
         <Footer />
       </main>
