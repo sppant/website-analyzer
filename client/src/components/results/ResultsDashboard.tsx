@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import ScoreCard from "../ScoreCard";
 import ResultSummary from "../ResultSummary";
 import SeoAnalysis from "../SeoAnalysis";
@@ -14,9 +16,16 @@ type ResultsDashboardProps = {
   };
 };
 
-function ResultsDashboard({
-  result,
-}: ResultsDashboardProps) {
+type Tab =
+  | "overview"
+  | "on-page"
+  | "technical"
+  | "social"
+  | "opportunities";
+
+function ResultsDashboard({ result }: ResultsDashboardProps) {
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
+
   const sortedIssues = sortIssues(result.issues);
 
   return (
@@ -28,9 +37,71 @@ function ResultsDashboard({
         issues={sortedIssues}
       />
 
-      <SeoAnalysis seo={result.seo} />
+      <nav className="results-tabs" aria-label="SEO results sections">
+        <button
+          className={activeTab === "overview" ? "active" : ""}
+          onClick={() => setActiveTab("overview")}
+        >
+          Overview
+        </button>
 
-      <Opportunities issues={sortedIssues} />
+        <button
+          className={activeTab === "on-page" ? "active" : ""}
+          onClick={() => setActiveTab("on-page")}
+        >
+          On-Page SEO
+        </button>
+
+        <button
+          className={activeTab === "technical" ? "active" : ""}
+          onClick={() => setActiveTab("technical")}
+        >
+          Technical SEO
+        </button>
+
+        <button
+          className={activeTab === "social" ? "active" : ""}
+          onClick={() => setActiveTab("social")}
+        >
+          Social & Images
+        </button>
+
+        <button
+          className={activeTab === "opportunities" ? "active" : ""}
+          onClick={() => setActiveTab("opportunities")}
+        >
+          All Opportunities
+        </button>
+      </nav>
+
+      {activeTab === "overview" && (
+        <Opportunities issues={sortedIssues.slice(0, 3)} />
+      )}
+
+      {activeTab === "on-page" && (
+        <SeoAnalysis
+          seo={result.seo}
+          section="on-page"
+        />
+      )}
+
+      {activeTab === "technical" && (
+        <SeoAnalysis
+          seo={result.seo}
+          section="technical"
+        />
+      )}
+
+      {activeTab === "social" && (
+        <SeoAnalysis
+          seo={result.seo}
+          section="social"
+        />
+      )}
+
+      {activeTab === "opportunities" && (
+        <Opportunities issues={sortedIssues} />
+      )}
     </section>
   );
 }

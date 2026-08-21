@@ -1435,3 +1435,58 @@ article ul {
     justify-content: space-between;
   }
 }
+
+/* =========================================
+   RESULTS TABS
+========================================= */
+
+.results-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 18px 0;
+  padding: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.results-tabs button {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.results-tabs button:hover {
+  color: #ffffff;
+  background: #111914;
+}
+
+.results-tabs button.active {
+  color: #ffffff;
+  background: #17231c;
+  box-shadow: inset 0 0 0 1px #26372d;
+}
+
+@media (max-width: 700px) {
+  .results-tabs {
+    margin: 14px 0;
+  }
+
+  .results-tabs button {
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+}
