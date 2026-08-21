@@ -12,6 +12,7 @@ import SeoAnalysis from "./components/SeoAnalysis";
 import Opportunities from "./components/Opportunities";
 import TopFixes from "./components/TopFixes";
 import SeoHealthBreakdown from "./components/SeoHealthBreakdown";
+import GoogleSearchPreview from "./components/GoogleSearchPreview";
 
 import { useSeoAnalyzer } from "./hooks/useSeoAnalyzer";
 import { sortIssues } from "./utils/seo";
@@ -61,6 +62,8 @@ function App() {
           <TopFixes issues={sortedIssues} />
 
           <SeoHealthBreakdown seo={result.seo} />
+
+          <GoogleSearchPreview url={result.url} seo={result.seo} />
 
           <ResultSummary url={result.url} issues={sortedIssues} />
 
