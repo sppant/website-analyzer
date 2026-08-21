@@ -34,6 +34,7 @@ export type SeoIssue = {
   severity: "critical" | "important" | "opportunity";
   title: string;
   description: string;
+  recommendation: string;
   points: number;
 };
 
@@ -47,7 +48,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Website is not using HTTPS",
       description:
         "HTTPS is a fundamental security and trust requirement for modern websites.",
-      points: 15,
+            recommendation:
+        "Enable HTTPS for the website and redirect HTTP requests to the HTTPS version.",
+
+points: 15,
     });
   }
 
@@ -58,7 +62,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing page title",
       description:
         "Add a descriptive title that clearly communicates what the page is about.",
-      points: 20,
+            recommendation:
+        "Add a unique, descriptive <title> element that clearly explains the page topic. Aim for roughly 30–60 characters.",
+
+points: 20,
     });
   } else if (seo.titleLength < 30) {
     issues.push({
@@ -67,7 +74,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Page title is short",
       description:
         "Consider making the title more descriptive and useful for search engines and users.",
-      points: 8,
+            recommendation:
+        "Expand the page title to better describe the page and include its primary topic. Aim for roughly 30–60 characters.",
+
+points: 8,
     });
   } else if (seo.titleLength > 60) {
     issues.push({
@@ -76,7 +86,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Page title may be too long",
       description:
         "Consider shortening the title so the most important information is easier to understand.",
-      points: 4,
+            recommendation:
+        "Shorten the page title so the most important information appears first. Aim for roughly 30–60 characters.",
+
+points: 4,
     });
   }
 
@@ -87,7 +100,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing meta description",
       description:
         "Add a useful meta description that summarizes the page and encourages clicks from search results.",
-      points: 10,
+            recommendation:
+        "Add a unique meta description that summarizes the page and encourages users to click from search results. Aim for roughly 70–160 characters.",
+
+points: 10,
     });
   } else if (seo.metaDescriptionLength < 70) {
     issues.push({
@@ -96,7 +112,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Meta description is short",
       description:
         "Consider expanding the description to better explain the page.",
-      points: 3,
+            recommendation:
+        "Expand the meta description with useful information about the page while keeping it concise and relevant.",
+
+points: 3,
     });
   } else if (seo.metaDescriptionLength > 160) {
     issues.push({
@@ -105,7 +124,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Meta description may be too long",
       description:
         "Consider shortening the description to keep the most important information visible.",
-      points: 3,
+            recommendation:
+        "Shorten the meta description and place the most important information first. Aim for roughly 70–160 characters.",
+
+points: 3,
     });
   }
 
@@ -116,7 +138,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing H1 heading",
       description:
         "Add a clear primary heading that describes the main topic of the page.",
-      points: 12,
+            recommendation:
+        "Add one clear H1 heading that describes the main topic or purpose of the page.",
+
+points: 12,
     });
   } else if (seo.h1Count > 1) {
     issues.push({
@@ -125,7 +150,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Multiple H1 headings",
       description:
         "Review the heading structure and make sure there is a clear primary heading.",
-      points: 3,
+            recommendation:
+        "Review the heading structure and keep one primary H1 for the main topic, using H2 and H3 headings for supporting sections.",
+
+points: 3,
     });
   }
 
@@ -136,7 +164,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing canonical URL",
       description:
         "Consider adding a canonical URL to help search engines understand the preferred version of this page.",
-      points: 5,
+            recommendation:
+        "Add a canonical link element pointing to the preferred URL for this page.",
+
+points: 5,
     });
   }
 
@@ -147,7 +178,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing language declaration",
       description:
         "Add a language attribute to the HTML element.",
-      points: 2,
+            recommendation:
+        'Add a lang attribute to the HTML element, such as <html lang="en">, using the appropriate language code.',
+
+points: 2,
     });
   }
 
@@ -158,7 +192,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing viewport meta tag",
       description:
         "Add a viewport meta tag so the page behaves correctly on mobile devices.",
-      points: 6,
+            recommendation:
+        'Add a viewport meta tag such as <meta name="viewport" content="width=device-width, initial-scale=1">.',
+
+points: 6,
     });
   }
 
@@ -173,7 +210,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
         } ${
           seo.imagesMissingAlt === 1 ? "is" : "are"
         } missing alt text.`,
-      points: Math.min(seo.imagesMissingAlt * 2, 8),
+            recommendation:
+        "Add descriptive alt text to meaningful images. Use an empty alt attribute for purely decorative images.",
+
+points: Math.min(seo.imagesMissingAlt * 2, 8),
     });
   }
 
@@ -184,7 +224,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "robots.txt not found",
       description:
         "Consider adding a robots.txt file to provide crawl instructions to search engines.",
-      points: 2,
+            recommendation:
+        "Create a robots.txt file at the website root and use it to provide appropriate crawl instructions to search engines.",
+
+points: 2,
     });
   }
 
@@ -195,7 +238,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "XML sitemap not found",
       description:
         "Consider adding an XML sitemap to help search engines discover important pages.",
-      points: 4,
+            recommendation:
+        "Create an XML sitemap containing the important indexable URLs on the website and make it available at a discoverable URL.",
+
+points: 4,
     });
   }
 
@@ -206,7 +252,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing Open Graph title",
       description:
         "Add an Open Graph title to control how the page appears when shared on social platforms.",
-      points: 1,
+            recommendation:
+        "Add an og:title meta tag with a clear title for social sharing.",
+
+points: 1,
     });
   }
 
@@ -217,7 +266,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing Open Graph description",
       description:
         "Add an Open Graph description for better social sharing previews.",
-      points: 1,
+            recommendation:
+        "Add an og:description meta tag that summarizes the page for social sharing previews.",
+
+points: 1,
     });
   }
 
@@ -228,7 +280,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing Open Graph image",
       description:
         "Add an Open Graph image to improve the appearance of shared links.",
-      points: 1,
+            recommendation:
+        "Add an og:image meta tag pointing to a suitable image for social sharing previews.",
+
+points: 1,
     });
   }
 
@@ -239,7 +294,10 @@ export function analyzeSeo(seo: SeoData): SeoIssue[] {
       title: "Missing Twitter/X card",
       description:
         "Add a Twitter/X card meta tag to control how shared links are displayed.",
-      points: 1,
+            recommendation:
+        "Add an appropriate Twitter/X card meta tag, such as summary_large_image, to improve link previews.",
+
+points: 1,
     });
   }
 
