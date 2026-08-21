@@ -1,13 +1,13 @@
 function ProductPreview() {
   return (
     <section className="product-preview">
-      <span className="section-eyebrow">PRODUCT PREVIEW</span>
+      <span className="section-eyebrow">PREVIEW</span>
 
       <h2>See what your SEO report looks like</h2>
 
       <p>
-        Get a clear breakdown of technical and on-page SEO opportunities
-        without digging through complicated reports.
+        Get a clear breakdown of technical and on-page SEO opportunities without
+        digging through complicated reports.
       </p>
 
       <div className="product-preview-card">
