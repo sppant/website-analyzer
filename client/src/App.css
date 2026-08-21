@@ -1433,6 +1433,10 @@ article ul {
    RESULTS TABS
 ========================================= */
 
+.results {
+  margin-top: 20px;
+}
+
 .results-tabs {
   display: flex;
   align-items: center;
@@ -2509,3 +2513,100 @@ article ul {
   }
 }
 
+/* =========================================
+   PDF EXPORT
+========================================= */
+
+.score-card {
+  position: relative;
+}
+
+.download-pdf {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: rgba(12, 18, 15, 0.8);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.download-pdf:hover {
+  border-color: rgba(66, 245, 141, 0.3);
+  background: rgba(66, 245, 141, 0.06);
+  color: var(--green);
+}
+
+.download-pdf span {
+  font-size: 15px;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .download-pdf {
+    top: 14px;
+    right: 14px;
+    padding: 8px 10px;
+  }
+}
+
+/* =========================================
+   PRINT / PDF
+========================================= */
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  body::before,
+  main::before {
+    display: none !important;
+  }
+
+  .top-nav,
+  .footer,
+  .download-pdf,
+  .results-tabs,
+  .cookie-consent,
+  button {
+    display: none !important;
+  }
+
+  main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+
+  .score-card,
+  .result-summary,
+  .analysis-section,
+  .opportunities-section,
+  article {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+
+  .score-card {
+    background: #ffffff !important;
+    border: 1px solid #dddddd !important;
+  }
+
+  .score-card strong {
+    text-shadow: none !important;
+  }
+}

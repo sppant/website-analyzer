@@ -5,8 +5,21 @@ type ScoreCardProps = {
 };
 
 function ScoreCard({ score }: ScoreCardProps) {
+  function handleDownloadPdf() {
+    window.print();
+  }
+
   return (
     <div className="score-card">
+      <button
+        type="button"
+        className="download-pdf"
+        onClick={handleDownloadPdf}
+      >
+        <span aria-hidden="true">↓</span>
+        Download PDF
+      </button>
+
       <p>SEO SCORE</p>
 
       <strong>{score}</strong>
