@@ -98,31 +98,28 @@ The analyzer includes:
 - Response size limits
 - API rate limiting
 
-website-analyzer/
+## Project Structure
 
+```text
+website-analyzer/
 ├── client/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── hooks/
-│ │ ├── types/
-│ │ └── utils/
-│ ├── public/
-│ └── package.json
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── types/
+│   │   └── utils/
+│   └── package.json
 │
 ├── server/
-│ ├── src/
-│ │ ├── analyzer/
-│ │ │ └── seoRules.ts
-│ │ ├── routes/
-│ │ │ └── analyze.ts
-│ │ ├── services/
-│ │ │ └── seoAnalyzer.ts
-│ │ └── index.ts
-│ └── package.json
+│   ├── src/
+│   │   ├── analyzer/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── index.ts
+│   └── package.json
 │
 └── README.md
-
-````
+```
 
 ## Running Locally
 
@@ -132,7 +129,7 @@ website-analyzer/
 cd client
 npm install
 npm run dev
-````
+```
 
 The frontend runs on the Vite development server, typically at:
 
