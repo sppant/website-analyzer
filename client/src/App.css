@@ -884,3 +884,38 @@ article ul {
     min-height: auto;
   }
 }
+
+/* =========================================
+   FIX RECOMMENDATIONS
+========================================= */
+
+.fix-recommendation {
+  margin-top: 20px;
+  padding: 16px 18px;
+
+  background: rgba(66, 245, 141, 0.035);
+
+  border: 1px solid rgba(66, 245, 141, 0.1);
+  border-radius: 10px;
+}
+
+.fix-recommendation-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--green);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.fix-recommendation p {
+  margin: 0;
+
+  color: #b9c6bf;
+
+  font-size: 13px;
+  line-height: 1.65;
+}

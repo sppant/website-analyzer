@@ -35,6 +35,14 @@ function Opportunities({ issues }: OpportunitiesProps) {
             <h3>{issue.title}</h3>
 
             <p>{issue.description}</p>
+
+            <div className="fix-recommendation">
+              <span className="fix-recommendation-label">
+                HOW TO FIX
+              </span>
+
+              <p>{issue.recommendation}</p>
+            </div>
           </article>
         ))
       )}

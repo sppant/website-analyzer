@@ -27,6 +27,7 @@ export type SeoIssue = {
   severity: "critical" | "important" | "opportunity";
   title: string;
   description: string;
+  recommendation: string;
   points: number;
 };
 
