@@ -2610,3 +2610,191 @@ article ul {
     text-shadow: none !important;
   }
 }
+
+/* =========================================
+   CONSULTATION CTA
+========================================= */
+
+.consultation-cta {
+  position: relative;
+  margin-top: 8px;
+  padding: 1px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(66, 245, 141, 0.24),
+    rgba(66, 245, 141, 0.04) 50%,
+    rgba(66, 245, 141, 0.14)
+  );
+}
+
+.consultation-cta-content {
+  position: relative;
+  padding: 42px 28px;
+  overflow: hidden;
+  border-radius: 17px;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(66, 245, 141, 0.1),
+      transparent 55%
+    ),
+    var(--surface);
+  text-align: center;
+}
+
+.consultation-cta-content::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  left: 50%;
+  top: -230px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(66, 245, 141, 0.07);
+  filter: blur(55px);
+  pointer-events: none;
+}
+
+.consultation-cta .section-eyebrow {
+  position: relative;
+  display: block;
+  margin-bottom: 12px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.consultation-cta h2 {
+  position: relative;
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.consultation-cta p {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto 24px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.consultation-cta-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--green);
+  color: #06100a;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 9px 26px rgba(66, 245, 141, 0.18);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.consultation-cta-button:hover {
+  transform: translateY(-1px);
+  background: #58f99c;
+  box-shadow: 0 12px 32px rgba(66, 245, 141, 0.27);
+}
+
+.consultation-cta-button span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+/* =========================================
+   CALENDLY MODAL
+========================================= */
+
+.calendly-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.calendly-modal-content {
+  position: relative;
+  width: min(100%, 760px);
+  height: min(850px, 92vh);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+}
+
+.calendly-modal-content iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.calendly-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #222222;
+  font-size: 23px;
+  line-height: 1;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.calendly-modal-close:hover {
+  background: #f4f4f4;
+}
+
+@media (max-width: 700px) {
+  .consultation-cta-content {
+    padding: 34px 20px;
+  }
+
+  .calendly-modal {
+    padding: 10px;
+  }
+
+  .calendly-modal-content {
+    height: 94vh;
+    border-radius: 12px;
+  }
+}
+
+@media print {
+  .consultation-cta,
+  .calendly-modal {
+    display: none !important;
+  }
+}
+

@@ -4,6 +4,7 @@ import ScoreCard from "../ScoreCard";
 import ResultSummary from "../ResultSummary";
 import SeoAnalysis from "../SeoAnalysis";
 import Opportunities from "../Opportunities";
+import ConsultationCTA from "../ConsultationCTA";
 
 import { sortIssues } from "../../utils/seo";
 
@@ -75,7 +76,10 @@ function ResultsDashboard({ result }: ResultsDashboardProps) {
       </nav>
 
       {activeTab === "overview" && (
-        <Opportunities issues={sortedIssues.slice(0, 3)} />
+        <>
+          <Opportunities issues={sortedIssues.slice(0, 3)} />
+          <ConsultationCTA />
+        </>
       )}
 
       {activeTab === "on-page" && (
@@ -100,7 +104,10 @@ function ResultsDashboard({ result }: ResultsDashboardProps) {
       )}
 
       {activeTab === "opportunities" && (
-        <Opportunities issues={sortedIssues} />
+        <>
+          <Opportunities issues={sortedIssues} />
+          <ConsultationCTA />
+        </>
       )}
     </section>
   );
