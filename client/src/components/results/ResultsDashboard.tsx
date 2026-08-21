@@ -15,6 +15,8 @@ type ResultsDashboardProps = {
     issues: Parameters<typeof sortIssues>[0];
     seo: Parameters<typeof SeoAnalysis>[0]["seo"];
   };
+  onReanalyze: () => void;
+  isLoading: boolean;
 };
 
 type Tab =
@@ -24,14 +26,22 @@ type Tab =
   | "social"
   | "opportunities";
 
-function ResultsDashboard({ result }: ResultsDashboardProps) {
+function ResultsDashboard({
+  result,
+  onReanalyze,
+  isLoading,
+}: ResultsDashboardProps) {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   const sortedIssues = sortIssues(result.issues);
 
   return (
     <section className="results">
-      <ScoreCard score={result.score} />
+      <ScoreCard
+        score={result.score}
+        onReanalyze={onReanalyze}
+        isLoading={isLoading}
+      />
 
       <ResultSummary
         url={result.url}

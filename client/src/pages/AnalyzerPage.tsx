@@ -64,7 +64,13 @@ function AnalyzerPage() {
         </>
       )}
 
-      {result && <ResultsDashboard result={result} />}
+      {result && (
+        <ResultsDashboard
+          result={result}
+          onReanalyze={() => analyze(result.url)}
+          isLoading={isLoading}
+        />
+      )}
     </>
   );
 }
