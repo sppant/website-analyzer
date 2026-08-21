@@ -55,6 +55,15 @@ function AnalyzerForm({
         </div>
       </form>
 
+      <p className="mt-3 flex items-center justify-center gap-2 text-xs text-text-muted">
+        <span aria-hidden="true">✨</span>
+        <span>
+          <strong className="font-medium text-text-primary">100% free</strong>
+          {" · "}
+          No signup required
+        </span>
+      </p>
+
       {error && (
         <p
           role="alert"

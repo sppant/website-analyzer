@@ -157,7 +157,7 @@ form {
   position: relative;
 
   width: min(820px, 100%);
-  margin: 0 auto 72px;
+  margin: 0 auto 18px;
 
   display: grid;
   grid-template-columns: 1fr auto;
