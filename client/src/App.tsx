@@ -5,6 +5,7 @@ import "./App.css";
 import AnalyzerPage from "./pages/AnalyzerPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import AboutPage from "./pages/AboutPage";
+import Footer from "./components/Footer";
 
 function Navigation() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
+        <Footer />
       </main>
     </BrowserRouter>
   );
