@@ -4,7 +4,7 @@ import { ArrowRight, Loader2, Search } from "lucide-react";
 type AnalyzerFormProps = {
   url: string;
   isLoading: boolean;
-  error: string;
+  error: string | null;
   onUrlChange: (url: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };

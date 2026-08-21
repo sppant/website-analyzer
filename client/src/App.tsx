@@ -4,6 +4,8 @@ import type { FormEvent } from "react";
 import "./App.css";
 
 import AnalyzerForm from "./components/AnalyzerForm";
+import FeatureHighlights from "./components/FeatureHighlights";
+import HowItWorks from "./components/HowItWorks";
 import ScoreCard from "./components/ScoreCard";
 import ResultSummary from "./components/ResultSummary";
 import SeoAnalysis from "./components/SeoAnalysis";
@@ -29,7 +31,9 @@ function App() {
       <header>
         <h1>Website SEO Opportunity Analyzer</h1>
 
-        <p>Find the biggest opportunities to improve your website.</p>
+        <p>
+          Find the biggest opportunities to improve your website.
+        </p>
       </header>
 
       <AnalyzerForm
@@ -39,6 +43,14 @@ function App() {
         onUrlChange={setUrl}
         onSubmit={handleSubmit}
       />
+
+      {!result && (
+        <>
+          <FeatureHighlights />
+
+          <HowItWorks />
+        </>
+      )}
 
       {result && (
         <section>
