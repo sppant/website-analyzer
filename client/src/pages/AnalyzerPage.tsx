@@ -8,6 +8,7 @@ import ProductPreview from "../components/ProductPreview";
 import BusinessBenefits from "../components/BusinessBenefits";
 import FAQ from "../components/FAQ";
 import FAQSchema from "../components/FAQSchema";
+import BottomCTA from "../components/BottomCTA";
 import ResultsDashboard from "../components/results/ResultsDashboard";
 
 import { useSeoAnalyzer } from "../hooks/useSeoAnalyzer";
@@ -58,6 +59,8 @@ function AnalyzerPage() {
 
           <FAQ />
           <FAQSchema />
+
+          <BottomCTA />
         </>
       )}
 

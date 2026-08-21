@@ -2382,3 +2382,130 @@ article ul {
     padding: 0 18px 18px;
   }
 }
+
+/* =========================================
+   BOTTOM CTA
+========================================= */
+
+.bottom-cta {
+  position: relative;
+  width: 100%;
+  margin: 96px auto 0;
+  padding: 1px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(66, 245, 141, 0.28),
+    rgba(66, 245, 141, 0.04) 45%,
+    rgba(66, 245, 141, 0.16)
+  );
+}
+
+.bottom-cta-content {
+  position: relative;
+  padding: 64px 24px;
+  overflow: hidden;
+  border-radius: 19px;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(66, 245, 141, 0.12),
+      transparent 55%
+    ),
+    #0c120f;
+  text-align: center;
+}
+
+.bottom-cta-content::before {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  left: 50%;
+  top: -250px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(66, 245, 141, 0.08);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.bottom-cta .section-eyebrow {
+  position: relative;
+  display: block;
+  margin-bottom: 14px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.bottom-cta h2 {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto 14px;
+  color: #ffffff;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -1.8px;
+}
+
+.bottom-cta p {
+  position: relative;
+  margin: 0 auto 28px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.bottom-cta button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--green);
+  color: #06100a;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(66, 245, 141, 0.2);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.bottom-cta button:hover {
+  transform: translateY(-1px);
+  background: #58f99c;
+  box-shadow: 0 14px 35px rgba(66, 245, 141, 0.28);
+}
+
+.bottom-cta button span {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bottom-cta small {
+  position: relative;
+  display: block;
+  margin-top: 14px;
+  color: var(--muted-dark);
+  font-size: 11px;
+}
+
+@media (max-width: 700px) {
+  .bottom-cta {
+    margin-top: 70px;
+  }
+
+  .bottom-cta-content {
+    padding: 48px 20px;
+  }
+}
+
