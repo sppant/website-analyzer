@@ -5,6 +5,7 @@ import ResultSummary from "../ResultSummary";
 import SeoAnalysis from "../SeoAnalysis";
 import Opportunities from "../Opportunities";
 import ConsultationCTA from "../ConsultationCTA";
+import ChecksPassed from "../ChecksPassed";
 
 import { sortIssues } from "../../utils/seo";
 
@@ -87,6 +88,7 @@ function ResultsDashboard({
 
       {activeTab === "overview" && (
         <>
+          <ChecksPassed seo={result.seo} />
           <Opportunities issues={sortedIssues.slice(0, 3)} />
           <ConsultationCTA />
         </>

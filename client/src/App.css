@@ -2857,3 +2857,121 @@ article ul {
     display: none !important;
   }
 }
+
+/* =========================================
+   CHECKS PASSED
+========================================= */
+
+.checks-passed {
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.checks-passed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.checks-passed-header h2 {
+  margin: 6px 0 7px;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.checks-passed-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.section-eyebrow {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.checks-passed-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  height: 72px;
+  border: 1px solid rgba(66, 245, 141, 0.18);
+  border-radius: 14px;
+  background: var(--green-soft);
+}
+
+.checks-passed-count strong {
+  color: var(--green);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.checks-passed-count span {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.passed-checks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.passed-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border: 1px solid #18231d;
+  border-radius: 10px;
+  background: #090f0c;
+  color: #cbd5cf;
+  font-size: 12px;
+}
+
+.passed-check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .checks-passed {
+    padding: 20px;
+  }
+
+  .checks-passed-header {
+    align-items: flex-start;
+  }
+
+  .checks-passed-count {
+    min-width: 60px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .passed-checks {
+    grid-template-columns: 1fr;
+  }
+}
