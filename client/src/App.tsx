@@ -11,6 +11,7 @@ import ResultSummary from "./components/ResultSummary";
 import SeoAnalysis from "./components/SeoAnalysis";
 import Opportunities from "./components/Opportunities";
 import TopFixes from "./components/TopFixes";
+import SeoHealthBreakdown from "./components/SeoHealthBreakdown";
 
 import { useSeoAnalyzer } from "./hooks/useSeoAnalyzer";
 import { sortIssues } from "./utils/seo";
@@ -58,6 +59,8 @@ function App() {
           <ScoreCard score={result.score} />
 
           <TopFixes issues={sortedIssues} />
+
+          <SeoHealthBreakdown seo={result.seo} />
 
           <ResultSummary url={result.url} issues={sortedIssues} />
 
