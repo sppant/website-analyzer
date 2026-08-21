@@ -7,6 +7,7 @@ import FeaturesPage from "./pages/FeaturesPage";
 import AboutPage from "./pages/AboutPage";
 import LegalPage from "./pages/LegalPage";
 import Footer from "./components/Footer";
+import CookieConsent from "./components/CookieConsent";
 
 function Navigation() {
   return (
@@ -32,6 +33,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navigation />
+      <CookieConsent />
 
       <main>
         <Routes>
