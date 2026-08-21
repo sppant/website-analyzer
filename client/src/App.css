@@ -2171,3 +2171,93 @@ article ul {
     margin-top: 5px;
   }
 }
+
+/* =========================================
+   BUSINESS BENEFITS
+========================================= */
+
+.business-benefits {
+  margin: 110px 0;
+}
+
+.business-benefits > .section-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.business-benefits > h2 {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+  text-align: center;
+}
+
+.business-benefits > p {
+  max-width: 620px;
+  margin: 18px auto 42px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.benefit-card {
+  min-height: 190px;
+  padding: 26px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.benefit-number {
+  display: block;
+  margin-bottom: 30px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.benefit-card h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: -0.4px;
+}
+
+.benefit-card p {
+  max-width: 500px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.benefit-card:hover {
+  border-color: #25372d;
+  background: #0c130f;
+}
+
+@media (max-width: 700px) {
+  .business-benefits {
+    margin: 80px 0;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefit-card {
+    min-height: auto;
+  }
+}

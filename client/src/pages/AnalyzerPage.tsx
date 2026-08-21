@@ -5,6 +5,7 @@ import AnalyzerForm from "../components/AnalyzerForm";
 import FeatureHighlights from "../components/FeatureHighlights";
 import HowItWorks from "../components/HowItWorks";
 import ProductPreview from "../components/ProductPreview";
+import BusinessBenefits from "../components/BusinessBenefits";
 import ResultsDashboard from "../components/results/ResultsDashboard";
 
 import { useSeoAnalyzer } from "../hooks/useSeoAnalyzer";
@@ -42,6 +43,8 @@ function AnalyzerPage() {
       {!result && (
         <>
           <ProductPreview />
+
+          <BusinessBenefits />
 
           <div id="features">
             <FeatureHighlights />
