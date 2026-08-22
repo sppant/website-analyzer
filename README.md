@@ -2,6 +2,8 @@
 
 A full-stack SEO analysis tool that scans a website and identifies practical opportunities to improve its technical, on-page, internal linking, social, and performance SEO.
 
+**Live Demo:** https://seo.webxdevelop.com/
+
 ## Overview
 
 The analyzer is designed to turn technical SEO checks into actionable recommendations rather than simply reporting whether individual elements exist.
@@ -130,6 +132,10 @@ Performance metrics are classified into:
 - `@fastify/rate-limit`
 - `ipaddr.js`
 
+### Testing
+
+- Vitest
+
 ### External APIs
 
 - Google PageSpeed Insights API
@@ -254,6 +260,20 @@ The API runs on:
 `http://localhost:3000`
 
 Make sure the required environment variables are configured before starting the backend.
+
+## Testing
+
+The backend uses Vitest for automated testing.
+
+Run the test suite with:
+
+```bash
+cd server
+
+npm test
+```
+
+This runs the Vitest test suite in a single run.
 
 ## API
 
