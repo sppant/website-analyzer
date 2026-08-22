@@ -1,15 +1,13 @@
 import type { FastifyPluginAsync } from "fastify";
 
-import {
-  analyzeSeo,
-  calculateSeoScore,
-} from "../analyzer/seoRules.js";
+import { analyzeSeo, calculateSeoScore } from "../analyzer/seoRules.js";
 
 import { fetchWithTimeout } from "../services/fetcher.js";
 import { extractSeoData } from "../services/seoAnalyzer.js";
 import { analyzeRobotsTxt } from "../services/robotsAnalyzer.js";
 import { analyzeSitemap } from "../services/sitemapAnalyzer.js";
 import { analyzeInternalLinks } from "../services/internalLinkAnalyzer.js";
+import { analyzePageSpeed } from "../services/pageSpeedAnalyzer.js";
 
 import { readResponseWithLimit } from "../utils/readResponse.js";
 import { isSafeUrl } from "../utils/safeUrl.js";
@@ -25,18 +23,14 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
       config: {
         rateLimit: {
           max: 5,
-          timeWindow: "1 minute",
+          timeWindow: "5 minute",
         },
       },
     },
     async (request, reply) => {
       const body = request.body;
 
-      if (
-        !body ||
-        typeof body !== "object" ||
-        !("url" in body)
-      ) {
+      if (!body || typeof body !== "object" || !("url" in body)) {
         return reply.status(400).send({
           error: "URL is required",
         });
@@ -85,10 +79,7 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
           });
         }
 
-        const html = await readResponseWithLimit(
-          response,
-          MAX_HTML_BYTES,
-        );
+        const html = await readResponseWithLimit(response, MAX_HTML_BYTES);
 
         if (html === null) {
           return reply.status(400).send({
@@ -96,31 +87,51 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
           });
         }
 
+        let pageSpeed;
+
+        try {
+          pageSpeed = await analyzePageSpeed(parsedUrl.href);
+        } catch (error) {
+          app.log.warn(
+            {
+              error:
+                error instanceof Error
+                  ? {
+                      name: error.name,
+                      message: error.message,
+                      stack: error.stack,
+                    }
+                  : String(error),
+            },
+            "PageSpeed analysis failed",
+          );
+
+          pageSpeed = {
+            performanceScore: null,
+            lcp: null,
+            cls: null,
+            inp: null,
+            fcp: null,
+            ttfb: null,
+          };
+        }
+
         const seo = {
           ...extractSeoData(html, parsedUrl),
-          internalLinks: analyzeInternalLinks(
-            html,
-            parsedUrl,
-          ),
+          internalLinks: analyzeInternalLinks(html, parsedUrl),
+          pageSpeed,
         };
 
         const origin = parsedUrl.origin;
 
-        const robotsUrl = new URL(
-          "/robots.txt",
-          origin,
-        ).href;
+        const robotsUrl = new URL("/robots.txt", origin).href;
 
-        const sitemapUrl = new URL(
-          "/sitemap.xml",
-          origin,
-        ).href;
+        const sitemapUrl = new URL("/sitemap.xml", origin).href;
 
-        const [robotsResponse, sitemapResponse] =
-          await Promise.all([
-            fetchWithTimeout(robotsUrl, 5000),
-            fetchWithTimeout(sitemapUrl, 5000),
-          ]);
+        const [robotsResponse, sitemapResponse] = await Promise.all([
+          fetchWithTimeout(robotsUrl, 5000),
+          fetchWithTimeout(sitemapUrl, 5000),
+        ]);
 
         if (robotsResponse?.ok) {
           const robotsText = await readResponseWithLimit(
@@ -129,10 +140,7 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
           );
 
           if (robotsText !== null) {
-            Object.assign(
-              seo,
-              analyzeRobotsTxt(robotsText),
-            );
+            Object.assign(seo, analyzeRobotsTxt(robotsText));
           }
         }
 

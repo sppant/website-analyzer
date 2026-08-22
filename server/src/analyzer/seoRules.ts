@@ -1,3 +1,12 @@
+export type PageSpeedData = {
+  performanceScore: number | null;
+  lcp: number | null;
+  cls: number | null;
+  inp: number | null;
+  fcp: number | null;
+  ttfb: number | null;
+};
+
 export type InternalLinkData = {
   totalLinks: number;
   internalLinks: number;
@@ -63,6 +72,7 @@ export type SeoData = {
   twitterCard: string | null;
 
   internalLinks: InternalLinkData;
+  pageSpeed?: PageSpeedData;
 };
 
 export type SeoIssue = {
@@ -407,86 +417,6 @@ points: 1,
         "Add an appropriate Twitter/X card meta tag, such as summary_large_image, to improve link previews.",
 
 points: 1,
-    });
-  }
-
-  if (seo.internalLinks.internalLinks === 0) {
-    issues.push({
-      type: "no-internal-links",
-      severity: "important",
-      title: "No internal links found",
-      description:
-        "This page does not contain any links to other pages on the same website.",
-      recommendation:
-        "Add relevant contextual internal links to important pages on your website to improve navigation and help search engines discover related content.",
-      points: 6,
-    });
-  } else if (seo.internalLinks.internalLinks < 3) {
-    issues.push({
-      type: "few-internal-links",
-      severity: "opportunity",
-      title: "Few internal links found",
-      description:
-        `Only ${seo.internalLinks.internalLinks} internal ${
-          seo.internalLinks.internalLinks === 1 ? "link" : "links"
-        } were found on this page.`,
-      recommendation:
-        "Consider adding more relevant contextual internal links to important pages and related content.",
-      points: 3,
-    });
-  }
-
-  if (seo.internalLinks.emptyAnchorLinks > 0) {
-    issues.push({
-      type: "empty-internal-link-anchors",
-      severity: "opportunity",
-      title: "Internal links have empty anchor text",
-      description:
-        `${seo.internalLinks.emptyAnchorLinks} internal ${
-          seo.internalLinks.emptyAnchorLinks === 1 ? "link has" : "links have"
-        } empty anchor text.`,
-      recommendation:
-        "Use descriptive anchor text for meaningful links so users and search engines can better understand the destination.",
-      points: Math.min(
-        seo.internalLinks.emptyAnchorLinks,
-        4,
-      ),
-    });
-  }
-
-  if (seo.internalLinks.genericAnchorLinks > 0) {
-    issues.push({
-      type: "generic-internal-link-anchors",
-      severity: "opportunity",
-      title: "Generic internal link anchor text",
-      description:
-        `${seo.internalLinks.genericAnchorLinks} internal ${
-          seo.internalLinks.genericAnchorLinks === 1 ? "link uses" : "links use"
-        } generic anchor text such as "read more" or "click here".`,
-      recommendation:
-        "Replace generic anchor text with concise descriptions that communicate what users will find at the linked page.",
-      points: Math.min(
-        seo.internalLinks.genericAnchorLinks,
-        4,
-      ),
-    });
-  }
-
-  if (seo.internalLinks.httpInternalLinks > 0) {
-    issues.push({
-      type: "http-internal-links",
-      severity: "important",
-      title: "Internal links use HTTP",
-      description:
-        `${seo.internalLinks.httpInternalLinks} internal ${
-          seo.internalLinks.httpInternalLinks === 1 ? "link points" : "links point"
-        } to an HTTP URL.`,
-      recommendation:
-        "Update internal links to use the HTTPS version of the destination URL.",
-      points: Math.min(
-        seo.internalLinks.httpInternalLinks * 2,
-        6,
-      ),
     });
   }
 

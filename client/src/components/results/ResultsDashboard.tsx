@@ -25,6 +25,7 @@ type Tab =
   | "on-page"
   | "technical"
   | "social"
+  | "performance"
   | "opportunities";
 
 function ResultsDashboard({
@@ -79,6 +80,13 @@ function ResultsDashboard({
         </button>
 
         <button
+          className={activeTab === "performance" ? "active" : ""}
+          onClick={() => setActiveTab("performance")}
+        >
+          Performance
+        </button>
+
+        <button
           className={activeTab === "opportunities" ? "active" : ""}
           onClick={() => setActiveTab("opportunities")}
         >
@@ -112,6 +120,13 @@ function ResultsDashboard({
         <SeoAnalysis
           seo={result.seo}
           section="social"
+        />
+      )}
+
+      {activeTab === "performance" && (
+        <SeoAnalysis
+          seo={result.seo}
+          section="performance"
         />
       )}
 

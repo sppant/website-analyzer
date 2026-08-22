@@ -2635,11 +2635,7 @@ article ul {
   overflow: hidden;
   border-radius: 17px;
   background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(66, 245, 141, 0.1),
-      transparent 55%
-    ),
+    radial-gradient(circle at 50% 0%, rgba(66, 245, 141, 0.1), transparent 55%),
     var(--surface);
   text-align: center;
 }
@@ -2797,7 +2793,6 @@ article ul {
     display: none !important;
   }
 }
-
 
 /* Score card actions */
 
@@ -2974,4 +2969,862 @@ article ul {
   .passed-checks {
     grid-template-columns: 1fr;
   }
+}
+
+/* =========================================
+   PAGE SPEED / PERFORMANCE
+========================================= */
+
+.pagespeed-analysis {
+  display: grid;
+  gap: 18px;
+}
+
+.pagespeed-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 28px;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(66, 245, 141, 0.08),
+      transparent 40%
+    ),
+    var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.pagespeed-header h3 {
+  margin: 0 0 7px;
+
+  color: #ffffff;
+
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.pagespeed-header p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* -----------------------------------------
+   PERFORMANCE SCORE
+----------------------------------------- */
+
+.pagespeed-score {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagespeed-score-ring {
+  position: relative;
+
+  width: 74px;
+  height: 74px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle, var(--surface) 57%, transparent 58%),
+    conic-gradient(var(--green) var(--score), #18231d var(--score));
+}
+
+.pagespeed-score-ring strong {
+  color: var(--green);
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.pagespeed-score-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pagespeed-score-label span {
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.pagespeed-score-label strong {
+  color: #ffffff;
+
+  font-size: 15px;
+}
+
+/* -----------------------------------------
+   METRICS GRID
+----------------------------------------- */
+
+.pagespeed-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.pagespeed-metric {
+  position: relative;
+
+  padding: 20px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  overflow: hidden;
+}
+
+.pagespeed-metric::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+
+  background: var(--metric-color, var(--green));
+
+  opacity: 0.8;
+}
+
+.pagespeed-metric-top {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.pagespeed-metric-name {
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pagespeed-status {
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  background: rgba(66, 245, 141, 0.08);
+  color: var(--green);
+}
+
+.pagespeed-status.warning {
+  background: rgba(255, 173, 92, 0.1);
+  color: var(--orange);
+}
+
+.pagespeed-status.poor {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--red);
+}
+
+.pagespeed-status.neutral {
+  background: rgba(137, 150, 142, 0.08);
+  color: var(--muted);
+}
+
+.pagespeed-metric-value {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  font-size: 27px;
+  font-weight: 800;
+
+  letter-spacing: -1px;
+}
+
+.pagespeed-metric-description {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* -----------------------------------------
+   METRIC BARS
+----------------------------------------- */
+
+.pagespeed-bar {
+  width: 100%;
+  height: 5px;
+
+  margin-top: 15px;
+
+  overflow: hidden;
+
+  background: #18221c;
+
+  border-radius: 999px;
+}
+
+.pagespeed-bar-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: var(--metric-color, var(--green));
+
+  transition: width 0.5s ease;
+}
+
+/* -----------------------------------------
+   CORE WEB VITALS
+----------------------------------------- */
+
+.pagespeed-vitals {
+  padding: 24px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.pagespeed-vitals-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.pagespeed-vitals-header h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+
+.pagespeed-vitals-header span {
+  color: var(--muted-dark);
+
+  font-size: 11px;
+}
+
+.pagespeed-vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.pagespeed-vital {
+  padding: 16px;
+
+  background: #090f0c;
+
+  border: 1px solid #17231c;
+  border-radius: 12px;
+}
+
+.pagespeed-vital-name {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pagespeed-vital-value {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #ffffff;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.pagespeed-vital-description {
+  color: var(--muted-dark);
+
+  font-size: 11px;
+}
+
+/* -----------------------------------------
+   PERFORMANCE EXPLANATION
+----------------------------------------- */
+
+.pagespeed-insight {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+
+  padding: 22px 24px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(66, 245, 141, 0.06),
+    rgba(12, 18, 15, 0.95)
+  );
+
+  border: 1px solid rgba(66, 245, 141, 0.12);
+  border-radius: 14px;
+}
+
+.pagespeed-insight-icon {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: var(--green-soft);
+
+  color: var(--green);
+
+  font-weight: 900;
+}
+
+.pagespeed-insight h4 {
+  margin: 0 0 5px;
+
+  color: #ffffff;
+
+  font-size: 13px;
+}
+
+.pagespeed-insight p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* -----------------------------------------
+   RESPONSIVE
+----------------------------------------- */
+
+@media (max-width: 800px) {
+  .pagespeed-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pagespeed-vitals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .pagespeed-header {
+    flex-direction: column;
+  }
+
+  .pagespeed-score {
+    width: 100%;
+  }
+
+  .pagespeed-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .pagespeed-vitals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pagespeed-insight {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   PERFORMANCE ANALYSIS
+========================================= */
+
+.page-speed-section {
+  display: grid;
+  gap: 18px;
+}
+
+.page-speed-section > h3 {
+  display: none;
+}
+
+.performance-summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: center;
+
+  padding: 28px;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(66, 245, 141, 0.09),
+      transparent 40%
+    ),
+    var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.performance-score {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.performance-score-ring {
+  width: 92px;
+  height: 92px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: var(--green);
+
+  flex-shrink: 0;
+}
+
+.performance-score-inner {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--surface);
+  border-radius: 50%;
+}
+
+.performance-score-inner strong {
+  color: var(--green);
+
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.performance-score-inner span {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.performance-score > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.performance-score > div:last-child > strong {
+  color: #ffffff;
+
+  font-size: 15px;
+}
+
+.performance-summary-text {
+  padding-left: 24px;
+
+  border-left: 1px solid var(--border);
+}
+
+.performance-summary-text p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.performance-summary-text strong {
+  color: #ffffff;
+}
+
+/* =========================================
+   METRIC STATUS
+========================================= */
+
+.metric-status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(137, 150, 142, 0.08);
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.metric-status.good {
+  background: rgba(66, 245, 141, 0.1);
+  color: var(--green);
+}
+
+.metric-status.needs-improvement {
+  background: rgba(255, 173, 92, 0.1);
+  color: var(--orange);
+}
+
+.metric-status.poor {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--red);
+}
+
+.metric-status.not-available {
+  background: rgba(137, 150, 142, 0.08);
+  color: var(--muted);
+}
+
+/* =========================================
+   METRIC SECTIONS
+========================================= */
+
+.performance-metrics {
+  padding: 24px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.performance-metrics > h4,
+.performance-attention > h4,
+.performance-actions > h4 {
+  margin: 0 0 18px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+
+.performance-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.performance-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  padding: 18px;
+
+  background: #090f0c;
+
+  border: 1px solid #17231c;
+  border-radius: 12px;
+}
+
+.performance-metric-card .metric-label {
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.performance-metric-card > strong {
+  color: #ffffff;
+
+  font-size: 25px;
+  letter-spacing: -1px;
+}
+
+.performance-metric-card small {
+  color: var(--muted-dark);
+
+  font-size: 10px;
+}
+
+/* =========================================
+   PERFORMANCE BARS
+========================================= */
+
+.performance-bars {
+  display: grid;
+  gap: 20px;
+}
+
+.performance-bar-row {
+  display: grid;
+  gap: 8px;
+}
+
+.performance-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.performance-bar-header span {
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.performance-bar-header strong {
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+.performance-bar-track {
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  background: #18221c;
+
+  border-radius: 999px;
+}
+
+.performance-bar {
+  height: 100%;
+
+  min-width: 2px;
+
+  border-radius: inherit;
+
+  background: var(--muted);
+}
+
+.performance-bar.good {
+  background: var(--green);
+}
+
+.performance-bar.needs-improvement {
+  background: var(--orange);
+}
+
+.performance-bar.poor {
+  background: var(--red);
+}
+
+.performance-bar-row small {
+  color: var(--muted-dark);
+
+  font-size: 10px;
+}
+
+/* =========================================
+   PERFORMANCE ATTENTION
+========================================= */
+
+.performance-attention {
+  padding: 24px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.performance-warning,
+.performance-info,
+.performance-success {
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background: #090f0c;
+
+  border: 1px solid var(--border);
+}
+
+.performance-warning {
+  border-color: rgba(255, 107, 107, 0.18);
+}
+
+.performance-info {
+  border-color: rgba(137, 150, 142, 0.18);
+}
+
+.performance-success {
+  border-color: rgba(66, 245, 141, 0.15);
+}
+
+.performance-warning strong,
+.performance-info strong,
+.performance-success strong {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 13px;
+}
+
+.performance-warning strong {
+  color: var(--red);
+}
+
+.performance-info strong {
+  color: var(--muted);
+}
+
+.performance-success strong {
+  color: var(--green);
+}
+
+.performance-warning p,
+.performance-info p,
+.performance-success p {
+  margin: 0 0 8px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.performance-warning small {
+  color: var(--muted-dark);
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   PERFORMANCE ACTIONS
+========================================= */
+
+.performance-actions {
+  padding: 24px;
+
+  background: linear-gradient(135deg, rgba(66, 245, 141, 0.05), var(--surface));
+
+  border: 1px solid rgba(66, 245, 141, 0.12);
+  border-radius: 16px;
+}
+
+.performance-actions ol {
+  margin: 0;
+
+  padding-left: 20px;
+
+  color: var(--muted);
+}
+
+.performance-actions li {
+  margin-bottom: 10px;
+
+  padding-left: 5px;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.performance-actions li:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   PERFORMANCE RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+  .performance-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .performance-summary-text {
+    padding-left: 0;
+    padding-top: 18px;
+
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .performance-metric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.performance-analysis {
+  display: block;
+}
+
+.performance-analysis > h2 {
+  margin-bottom: 18px;
+}
+
+.performance-analysis > .page-speed-section {
+  display: block;
+  width: 100%;
+}
+
+.performance-summary,
+.performance-metrics,
+.performance-metrics,
+.performance-attention,
+.performance-actions {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.performance-warning {
+  margin-bottom: 20px;
 }

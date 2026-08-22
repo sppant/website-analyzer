@@ -1,3 +1,12 @@
+export type PageSpeedData = {
+  performanceScore: number | null;
+  lcp: number | null;
+  cls: number | null;
+  inp: number | null;
+  fcp: number | null;
+  ttfb: number | null;
+};
+
 export type InternalLinkData = {
   totalLinks: number;
   internalLinks: number;
@@ -61,6 +70,7 @@ export type SeoData = {
   twitterCard: string | null;
 
   internalLinks: InternalLinkData;
+  pageSpeed: PageSpeedData;
 };
 
 export type SeoIssue = {
