@@ -44,6 +44,11 @@ export type SeoData = {
   viewport: string | null;
   imageCount: number;
   imagesMissingAlt: number;
+
+  imagesMissingAltDetails: {
+    src: string;
+    alt: string | null;
+  }[];
   https: boolean;
   robotsTxt: boolean;
   robotsTxtHasSitemap: boolean;

@@ -23,9 +23,58 @@ export function extractSeoData(html: string, url: URL) {
 
   const images = $("img");
 
-  const imagesMissingAlt = images.filter((_, element) => {
-    return !$(element).attr("alt");
-  }).length;
+  const imagesMissingAltDetails: {
+    src: string;
+    alt: string | null;
+  }[] = [];
+
+  images.each((_, element) => {
+    const alt = $(element).attr("alt");
+
+    const candidates = [
+      $(element).attr("src"),
+      $(element).attr("data-src"),
+      $(element).attr("data-lazy-src"),
+      $(element).attr("data-original"),
+      $(element).attr("data-lazy"),
+      $(element).attr("data-image"),
+      $(element).attr("data-url"),
+    ]
+      .map((value) => value?.trim())
+      .filter((value): value is string => {
+        if (!value) {
+          return false;
+        }
+
+        return (
+          !value.startsWith("data:") &&
+          !value.startsWith("blob:")
+        );
+      });
+
+    let src = candidates[0] || "";
+
+    if (!src) {
+      const srcset = $(element).attr("srcset")?.trim();
+
+      if (srcset) {
+        src =
+          srcset
+            .split(",")[0]
+            ?.trim()
+            .split(/\s+/)[0] || "";
+      }
+    }
+
+    if (alt === undefined || alt.trim() === "") {
+      imagesMissingAltDetails.push({
+        src,
+        alt: alt ?? null,
+      });
+    }
+  });
+
+  const imagesMissingAlt = imagesMissingAltDetails.length;
 
   const ogTitle =
     $('meta[property="og:title"]').attr("content")?.trim() || null;
@@ -55,6 +104,7 @@ export function extractSeoData(html: string, url: URL) {
 
     imageCount: images.length,
     imagesMissingAlt,
+    imagesMissingAltDetails,
 
     https: url.protocol === "https:",
 

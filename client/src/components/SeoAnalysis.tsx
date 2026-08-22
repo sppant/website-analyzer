@@ -5,6 +5,15 @@ type SeoAnalysisProps = {
   section?: "on-page" | "technical" | "social";
 };
 
+function formatLinkUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    return parsed.pathname + parsed.search;
+  } catch {
+    return url;
+  }
+}
+
 function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
   if (section === "on-page") {
     return (
@@ -73,7 +82,7 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
                         {link.anchor || "(empty)"}
                       </strong>
                       {" → "}
-                      <span>{link.url}</span>
+                      <span>{formatLinkUrl(link.url)}</span>
                     </li>
                   ),
                 )}
@@ -100,7 +109,7 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
                 {seo.internalLinks.emptyAnchorDetails.map(
                   (link, index) => (
                     <li key={`${link.url}-${index}`}>
-                      <span>{link.url}</span>
+                      <span>{formatLinkUrl(link.url)}</span>
                     </li>
                   ),
                 )}
@@ -126,7 +135,7 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
                         {link.anchor || "(empty)"}
                       </strong>
                       {" → "}
-                      <span>{link.url}</span>
+                      <span>{formatLinkUrl(link.url)}</span>
                     </li>
                   ),
                 )}
@@ -144,7 +153,7 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
                 {seo.internalLinks.mostLinkedPages.map(
                   (page) => (
                     <li key={page.url}>
-                      <span>{page.url}</span>
+                      <span>{formatLinkUrl(page.url)}</span>
                       {" — "}
                       {page.count}{" "}
                       {page.count === 1
@@ -231,18 +240,58 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
 
       <article>
         <h3>Images</h3>
-        <p>Total images: {seo.imageCount}</p>
-        <p>Missing alt text: {seo.imagesMissingAlt}</p>
+
+        <p>
+          {seo.imageCount}{" "}
+          {seo.imageCount === 1 ? "image" : "images"} found
+        </p>
+
+        {seo.imagesMissingAlt > 0 ? (
+          <>
+            <p>
+              <strong>
+                {seo.imagesMissingAlt}{" "}
+                {seo.imagesMissingAlt === 1
+                  ? "image is"
+                  : "images are"}{" "}
+                missing alt text.
+              </strong>
+            </p>
+
+            <ul>
+              {seo.imagesMissingAltDetails
+                .slice(0, 10)
+                .map((image, index) => (
+                  <li key={`${image.src}-${index}`}>
+                    <span>{formatLinkUrl(image.src)}</span>
+                  </li>
+                ))}
+            </ul>
+
+            {seo.imagesMissingAltDetails.length > 10 && (
+              <small>
+                Showing the first 10 of{" "}
+                {seo.imagesMissingAltDetails.length} affected images.
+              </small>
+            )}
+          </>
+        ) : (
+          <p>✓ All images have alt text.</p>
+        )}
       </article>
 
       <article>
         <h3>Open Graph</h3>
+
         <p>
           Title: {seo.ogTitle ? "✓" : "Missing"}
         </p>
+
         <p>
-          Description: {seo.ogDescription ? "✓" : "Missing"}
+          Description:{" "}
+          {seo.ogDescription ? "✓" : "Missing"}
         </p>
+
         <p>
           Image: {seo.ogImage ? "✓" : "Missing"}
         </p>
@@ -250,6 +299,7 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
 
       <article>
         <h3>Twitter / X</h3>
+
         <p>
           Card: {seo.twitterCard ? "✓" : "Missing"}
         </p>
