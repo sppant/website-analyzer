@@ -10,6 +10,7 @@ import FAQ from "../components/FAQ";
 import FAQSchema from "../components/FAQSchema";
 import BottomCTA from "../components/BottomCTA";
 import ResultsDashboard from "../components/results/ResultsDashboard";
+import AnalysisLoader from "../components/AnalysisLoader";
 
 import { useSeoAnalyzer } from "../hooks/useSeoAnalyzer";
 
@@ -43,7 +44,9 @@ function AnalyzerPage() {
         />
       </div>
 
-      {!result && (
+      {isLoading && <AnalysisLoader />}
+
+      {!result && !isLoading && (
         <>
           <ProductPreview />
 
@@ -64,7 +67,7 @@ function AnalyzerPage() {
         </>
       )}
 
-      {result && (
+      {result && !isLoading && (
         <ResultsDashboard
           result={result}
           onReanalyze={() => analyze(result.url)}
