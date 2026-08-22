@@ -1,3 +1,37 @@
+export type InternalLinkData = {
+  totalLinks: number;
+  internalLinks: number;
+  uniqueInternalUrls: number;
+  externalLinks: number;
+
+  emptyAnchorLinks: number;
+  genericAnchorLinks: number;
+  httpInternalLinks: number;
+  selfLinks: number;
+
+  internalUrls: string[];
+
+  emptyAnchorDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  genericAnchorDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  httpInternalDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  mostLinkedPages: {
+    url: string;
+    count: number;
+  }[];
+};
+
 export type SeoData = {
   title: string;
   titleLength: number;
@@ -27,6 +61,8 @@ export type SeoData = {
   ogImage: string | null;
 
   twitterCard: string | null;
+
+  internalLinks: InternalLinkData;
 };
 
 export type SeoIssue = {
@@ -245,6 +281,79 @@ points: 4,
     });
   }
 
+  if (seo.internalLinks.internalLinks === 0) {
+    issues.push({
+      type: "no-internal-links",
+      severity: "important",
+      title: "No internal links found",
+      description:
+        "This page does not contain any links to other pages on the same website.",
+      recommendation:
+        "Add relevant contextual links to important pages on the website. Use descriptive anchor text that helps users and search engines understand the destination.",
+      points: 6,
+    });
+  }
+
+  if (seo.internalLinks.emptyAnchorLinks > 0) {
+    issues.push({
+      type: "empty-internal-link-anchors",
+      severity: "opportunity",
+      title: "Internal links have empty anchor text",
+      description:
+        `${seo.internalLinks.emptyAnchorLinks} internal link${
+          seo.internalLinks.emptyAnchorLinks === 1 ? "" : "s"
+        } ${
+          seo.internalLinks.emptyAnchorLinks === 1 ? "has" : "have"
+        } no visible anchor text.`,
+      recommendation:
+        "Add descriptive anchor text to internal links so users and search engines can understand what the linked page is about.",
+      points: Math.min(
+        seo.internalLinks.emptyAnchorLinks,
+        3,
+      ),
+    });
+  }
+
+  if (seo.internalLinks.genericAnchorLinks > 0) {
+    issues.push({
+      type: "generic-internal-link-anchors",
+      severity: "opportunity",
+      title: "Internal links use generic anchor text",
+      description:
+        `${seo.internalLinks.genericAnchorLinks} internal link${
+          seo.internalLinks.genericAnchorLinks === 1 ? "" : "s"
+        } ${
+          seo.internalLinks.genericAnchorLinks === 1 ? "uses" : "use"
+        } vague anchor text such as "Read more" or "Click here".`,
+      recommendation:
+        "Replace generic anchor text with descriptive phrases that clearly communicate the topic or destination of the linked page.",
+      points: Math.min(
+        seo.internalLinks.genericAnchorLinks,
+        3,
+      ),
+    });
+  }
+
+  if (seo.internalLinks.httpInternalLinks > 0) {
+    issues.push({
+      type: "http-internal-links",
+      severity: "important",
+      title: "Internal links point to HTTP URLs",
+      description:
+        `${seo.internalLinks.httpInternalLinks} internal link${
+          seo.internalLinks.httpInternalLinks === 1 ? "" : "s"
+        } ${
+          seo.internalLinks.httpInternalLinks === 1 ? "points" : "point"
+        } to an HTTP URL instead of HTTPS.`,
+      recommendation:
+        "Update internal links to use the HTTPS version of the destination URL.",
+      points: Math.min(
+        seo.internalLinks.httpInternalLinks * 2,
+        6,
+      ),
+    });
+  }
+
   if (!seo.ogTitle) {
     issues.push({
       type: "missing-og-title",
@@ -298,6 +407,86 @@ points: 1,
         "Add an appropriate Twitter/X card meta tag, such as summary_large_image, to improve link previews.",
 
 points: 1,
+    });
+  }
+
+  if (seo.internalLinks.internalLinks === 0) {
+    issues.push({
+      type: "no-internal-links",
+      severity: "important",
+      title: "No internal links found",
+      description:
+        "This page does not contain any links to other pages on the same website.",
+      recommendation:
+        "Add relevant contextual internal links to important pages on your website to improve navigation and help search engines discover related content.",
+      points: 6,
+    });
+  } else if (seo.internalLinks.internalLinks < 3) {
+    issues.push({
+      type: "few-internal-links",
+      severity: "opportunity",
+      title: "Few internal links found",
+      description:
+        `Only ${seo.internalLinks.internalLinks} internal ${
+          seo.internalLinks.internalLinks === 1 ? "link" : "links"
+        } were found on this page.`,
+      recommendation:
+        "Consider adding more relevant contextual internal links to important pages and related content.",
+      points: 3,
+    });
+  }
+
+  if (seo.internalLinks.emptyAnchorLinks > 0) {
+    issues.push({
+      type: "empty-internal-link-anchors",
+      severity: "opportunity",
+      title: "Internal links have empty anchor text",
+      description:
+        `${seo.internalLinks.emptyAnchorLinks} internal ${
+          seo.internalLinks.emptyAnchorLinks === 1 ? "link has" : "links have"
+        } empty anchor text.`,
+      recommendation:
+        "Use descriptive anchor text for meaningful links so users and search engines can better understand the destination.",
+      points: Math.min(
+        seo.internalLinks.emptyAnchorLinks,
+        4,
+      ),
+    });
+  }
+
+  if (seo.internalLinks.genericAnchorLinks > 0) {
+    issues.push({
+      type: "generic-internal-link-anchors",
+      severity: "opportunity",
+      title: "Generic internal link anchor text",
+      description:
+        `${seo.internalLinks.genericAnchorLinks} internal ${
+          seo.internalLinks.genericAnchorLinks === 1 ? "link uses" : "links use"
+        } generic anchor text such as "read more" or "click here".`,
+      recommendation:
+        "Replace generic anchor text with concise descriptions that communicate what users will find at the linked page.",
+      points: Math.min(
+        seo.internalLinks.genericAnchorLinks,
+        4,
+      ),
+    });
+  }
+
+  if (seo.internalLinks.httpInternalLinks > 0) {
+    issues.push({
+      type: "http-internal-links",
+      severity: "important",
+      title: "Internal links use HTTP",
+      description:
+        `${seo.internalLinks.httpInternalLinks} internal ${
+          seo.internalLinks.httpInternalLinks === 1 ? "link points" : "links point"
+        } to an HTTP URL.`,
+      recommendation:
+        "Update internal links to use the HTTPS version of the destination URL.",
+      points: Math.min(
+        seo.internalLinks.httpInternalLinks * 2,
+        6,
+      ),
     });
   }
 

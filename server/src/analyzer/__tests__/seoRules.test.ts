@@ -42,6 +42,33 @@ function createSeoData(
 
     twitterCard: "summary_large_image",
 
+    internalLinks: {
+      totalLinks: 10,
+      internalLinks: 8,
+      uniqueInternalUrls: 6,
+      externalLinks: 2,
+
+      emptyAnchorLinks: 0,
+      genericAnchorLinks: 0,
+      httpInternalLinks: 0,
+      selfLinks: 0,
+
+      internalUrls: [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/services",
+        "https://example.com/blog",
+        "https://example.com/pricing",
+      ],
+
+      emptyAnchorDetails: [],
+      genericAnchorDetails: [],
+      httpInternalDetails: [],
+
+      mostLinkedPages: [],
+    },
+
     ...overrides,
   };
 }
@@ -257,6 +284,96 @@ describe("analyzeSeo", () => {
         type: "missing-twitter-card",
         severity: "opportunity",
         points: 1,
+      }),
+    );
+  });
+
+  it("detects pages with no internal links", () => {
+    const issues = analyzeSeo(
+      createSeoData({
+        internalLinks: {
+          totalLinks: 2,
+          internalLinks: 0,
+          uniqueInternalUrls: 0,
+          externalLinks: 2,
+          emptyAnchorLinks: 0,
+          genericAnchorLinks: 0,
+          httpInternalLinks: 0,
+          selfLinks: 0,
+          internalUrls: [],
+          emptyAnchorDetails: [],
+          genericAnchorDetails: [],
+          httpInternalDetails: [],
+          mostLinkedPages: [],
+        },
+      }),
+    );
+
+    expect(issues).toContainEqual(
+      expect.objectContaining({
+        type: "no-internal-links",
+        severity: "important",
+        points: 6,
+      }),
+    );
+  });
+
+  it("detects empty internal link anchors", () => {
+    const issues = analyzeSeo(
+      createSeoData({
+        internalLinks: {
+          totalLinks: 5,
+          internalLinks: 5,
+          uniqueInternalUrls: 3,
+          externalLinks: 0,
+          emptyAnchorLinks: 2,
+          genericAnchorLinks: 0,
+          httpInternalLinks: 0,
+          selfLinks: 0,
+          internalUrls: [],
+          emptyAnchorDetails: [],
+          genericAnchorDetails: [],
+          httpInternalDetails: [],
+          mostLinkedPages: [],
+        },
+      }),
+    );
+
+    expect(issues).toContainEqual(
+      expect.objectContaining({
+        type: "empty-internal-link-anchors",
+        severity: "opportunity",
+        points: 2,
+      }),
+    );
+  });
+
+  it("detects generic internal link anchors", () => {
+    const issues = analyzeSeo(
+      createSeoData({
+        internalLinks: {
+          totalLinks: 5,
+          internalLinks: 5,
+          uniqueInternalUrls: 3,
+          externalLinks: 0,
+          emptyAnchorLinks: 0,
+          genericAnchorLinks: 4,
+          httpInternalLinks: 0,
+          selfLinks: 0,
+          internalUrls: [],
+          emptyAnchorDetails: [],
+          genericAnchorDetails: [],
+          httpInternalDetails: [],
+          mostLinkedPages: [],
+        },
+      }),
+    );
+
+    expect(issues).toContainEqual(
+      expect.objectContaining({
+        type: "generic-internal-link-anchors",
+        severity: "opportunity",
+        points: 3,
       }),
     );
   });

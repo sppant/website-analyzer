@@ -35,6 +35,138 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
             </ul>
           )}
         </article>
+
+        <article>
+          <h3>Internal Linking</h3>
+
+          <p>
+            {seo.internalLinks.internalLinks} internal links
+          </p>
+
+          <small>
+            {seo.internalLinks.uniqueInternalUrls} unique destinations
+          </small>
+
+          <small>
+            {seo.internalLinks.externalLinks} external links
+          </small>
+
+          {seo.internalLinks.genericAnchorDetails.length > 0 && (
+            <div>
+              <h4>
+                Generic anchor text
+              </h4>
+
+              <p>
+                {seo.internalLinks.genericAnchorLinks}{" "}
+                {seo.internalLinks.genericAnchorLinks === 1
+                  ? "link uses"
+                  : "links use"}{" "}
+                vague anchor text.
+              </p>
+
+              <ul>
+                {seo.internalLinks.genericAnchorDetails.map(
+                  (link, index) => (
+                    <li key={`${link.url}-${index}`}>
+                      <strong>
+                        {link.anchor || "(empty)"}
+                      </strong>
+                      {" → "}
+                      <span>{link.url}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
+
+          {seo.internalLinks.emptyAnchorDetails.length > 0 && (
+            <div>
+              <h4>
+                Empty anchor text
+              </h4>
+
+              <p>
+                {seo.internalLinks.emptyAnchorLinks}{" "}
+                internal{" "}
+                {seo.internalLinks.emptyAnchorLinks === 1
+                  ? "link has"
+                  : "links have"}{" "}
+                no visible anchor text.
+              </p>
+
+              <ul>
+                {seo.internalLinks.emptyAnchorDetails.map(
+                  (link, index) => (
+                    <li key={`${link.url}-${index}`}>
+                      <span>{link.url}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
+
+          {seo.internalLinks.httpInternalDetails.length > 0 && (
+            <div>
+              <h4>
+                HTTP internal links
+              </h4>
+
+              <p>
+                These links should use HTTPS.
+              </p>
+
+              <ul>
+                {seo.internalLinks.httpInternalDetails.map(
+                  (link, index) => (
+                    <li key={`${link.url}-${index}`}>
+                      <strong>
+                        {link.anchor || "(empty)"}
+                      </strong>
+                      {" → "}
+                      <span>{link.url}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
+
+          {seo.internalLinks.mostLinkedPages.length > 0 && (
+            <div>
+              <h4>
+                Most linked pages
+              </h4>
+
+              <ul>
+                {seo.internalLinks.mostLinkedPages.map(
+                  (page) => (
+                    <li key={page.url}>
+                      <span>{page.url}</span>
+                      {" — "}
+                      {page.count}{" "}
+                      {page.count === 1
+                        ? "link"
+                        : "links"}
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
+
+          {seo.internalLinks.selfLinks > 0 && (
+            <small>
+              {seo.internalLinks.selfLinks} self{" "}
+              {seo.internalLinks.selfLinks === 1
+                ? "link"
+                : "links"}{" "}
+              detected.
+            </small>
+          )}
+        </article>
       </div>
     );
   }

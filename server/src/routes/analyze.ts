@@ -9,6 +9,7 @@ import { fetchWithTimeout } from "../services/fetcher.js";
 import { extractSeoData } from "../services/seoAnalyzer.js";
 import { analyzeRobotsTxt } from "../services/robotsAnalyzer.js";
 import { analyzeSitemap } from "../services/sitemapAnalyzer.js";
+import { analyzeInternalLinks } from "../services/internalLinkAnalyzer.js";
 
 import { readResponseWithLimit } from "../utils/readResponse.js";
 import { isSafeUrl } from "../utils/safeUrl.js";
@@ -95,7 +96,13 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
           });
         }
 
-        const seo = extractSeoData(html, parsedUrl);
+        const seo = {
+          ...extractSeoData(html, parsedUrl),
+          internalLinks: analyzeInternalLinks(
+            html,
+            parsedUrl,
+          ),
+        };
 
         const origin = parsedUrl.origin;
 

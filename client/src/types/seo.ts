@@ -1,3 +1,37 @@
+export type InternalLinkData = {
+  totalLinks: number;
+  internalLinks: number;
+  uniqueInternalUrls: number;
+  externalLinks: number;
+
+  emptyAnchorLinks: number;
+  genericAnchorLinks: number;
+  httpInternalLinks: number;
+  selfLinks: number;
+
+  internalUrls: string[];
+
+  emptyAnchorDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  genericAnchorDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  httpInternalDetails: {
+    url: string;
+    anchor: string;
+  }[];
+
+  mostLinkedPages: {
+    url: string;
+    count: number;
+  }[];
+};
+
 export type SeoData = {
   title: string;
   titleLength: number;
@@ -20,6 +54,8 @@ export type SeoData = {
   ogDescription: string | null;
   ogImage: string | null;
   twitterCard: string | null;
+
+  internalLinks: InternalLinkData;
 };
 
 export type SeoIssue = {
