@@ -1,57 +1,10 @@
-# Website SEO Opportunity Analyzer
+# SEO Analyzer
 
-A full-stack SEO analysis tool that scans a website and identifies practical opportunities to improve its technical, on-page, internal linking, social, and performance SEO.
+A full-stack SaaS platform that analyzes websites for technical, on-page, and social SEO issues, and returns a scored report with prioritized recommendations.
 
-**Live Demo:** https://seo.webxdevelop.com/
-
-## Overview
-
-The analyzer is designed to turn technical SEO checks into actionable recommendations rather than simply reporting whether individual elements exist.
-
-Instead of presenting a large list of technical findings, it prioritizes issues by severity and potential score impact, helping users understand what should be fixed first.
-
-The analyzer also integrates Google PageSpeed Insights to provide performance and Core Web Vitals data alongside traditional SEO checks.
-
-## Screenshots
-
-### SEO Score
-
-![SEO Score](screenshots/score.png)
-
-### SEO Analysis
-
-![SEO Analysis](screenshots/seo-analysis.png)
-
-### Biggest Opportunities
-
-![Biggest Opportunities](screenshots/opportunities.png)
+🔗 Live: [seo.webxdevelop.com](https://seo.webxdevelop.com)
 
 ## Features
-
-### SEO Analysis
-
-- SEO score out of 100
-- Page title analysis
-- Meta description analysis
-- H1 heading analysis
-- Canonical URL detection
-- HTML language detection
-- Viewport detection
-- HTTPS detection
-- Image count analysis
-- Missing `alt` attribute detection
-
-### Internal Linking
-
-- Total internal link count
-- Unique internal destinations
-- External link detection
-- Empty anchor text detection
-- Generic anchor text detection
-- HTTP internal link detection
-- Self-link detection
-- Most-linked internal pages
-- Detailed reporting for problematic internal links
 
 ### Technical SEO
 
@@ -135,6 +88,7 @@ Performance metrics are classified into:
 ### Testing
 
 - Vitest
+- Playwright
 
 ### External APIs
 
@@ -359,6 +313,14 @@ npm test
 ```
 
 This runs the Vitest test suite in a single run.
+
+The frontend SPA uses Playwright for end-to-end smoke tests:
+
+```bash
+cd client
+
+npx playwright test
+```
 
 ## Design system
 
@@ -660,11 +622,11 @@ the list (`/blog`, `/blog/[slug]`, `sitemap.ts`) reads through it.
    ---
    title: "Your Article Title"
    description: "~150–160 char summary used for the meta description and card."
-   publishedAt: "2026-09-01"      # required, YYYY-MM-DD
-   updatedAt: "2026-10-15"        # optional
-   author: "WebXDevelop"          # optional, defaults to WebXDevelop
-   category: "Technical SEO"      # optional
-   draft: true                    # optional — excludes it from the site + sitemap
+   publishedAt: "2026-09-01" # required, YYYY-MM-DD
+   updatedAt: "2026-10-15" # optional
+   author: "WebXDevelop" # optional, defaults to WebXDevelop
+   category: "Technical SEO" # optional
+   draft: true # optional — excludes it from the site + sitemap
    ---
    ```
 
