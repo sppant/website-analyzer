@@ -5,6 +5,7 @@ export function analyzeRobotsTxt(text: string) {
 
   let blocksAll = false;
   let currentUserAgent = "";
+  const sitemapUrls: string[] = [];
 
   for (const rawLine of text.split(/\r?\n/)) {
     const line = rawLine.trim();
@@ -40,11 +41,18 @@ export function analyzeRobotsTxt(text: string) {
     ) {
       blocksAll = true;
     }
+
+    // `Sitemap:` is a global directive (not scoped to a user-agent group).
+    if (directive === "sitemap" && value) {
+      sitemapUrls.push(value);
+    }
   }
 
   return {
     robotsTxt: true,
     robotsTxtHasSitemap: hasSitemap,
     robotsTxtBlocksAll: blocksAll,
+    /** Absolute URLs from `Sitemap:` directives, in file order. */
+    sitemapUrls,
   };
 }

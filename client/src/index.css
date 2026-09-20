@@ -22,4 +22,13 @@
   --color-text-primary: #f3f7f5;
   --color-text-secondary: #a6b3ad;
   --color-text-muted: #6f7d77;
+
+  /* The site's actual signature accent (used everywhere via the plain
+     `--green` custom property in App.css) — distinct from `--color-brand-*`
+     above, which is only used in one older component. New `ui/` components
+     should use `accent`, not `brand`, to match the design that's actually on
+     every page. */
+  --color-accent: #42f58d;
+  --color-accent-hover: #58f99c;
+  --color-ink: #06100a;
 }

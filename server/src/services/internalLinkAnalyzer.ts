@@ -1,5 +1,11 @@
 import * as cheerio from "cheerio";
 
+/**
+ * Upper bound on entries kept in any per-page detail list (see the note in
+ * `seoAnalyzer.ts`). The summary counters stay exact.
+ */
+const MAX_DETAIL_ENTRIES = 200;
+
 export type InternalLinkDetail = {
   url: string;
   anchor: string;
@@ -134,28 +140,25 @@ export function analyzeInternalLinks(
       if (anchor === "") {
         emptyAnchorLinks++;
 
-        emptyAnchorDetails.push({
-          url: normalizedUrl,
-          anchor: "",
-        });
+        if (emptyAnchorDetails.length < MAX_DETAIL_ENTRIES) {
+          emptyAnchorDetails.push({ url: normalizedUrl, anchor: "" });
+        }
       }
 
       if (GENERIC_ANCHORS.has(anchor.toLowerCase())) {
         genericAnchorLinks++;
 
-        genericAnchorDetails.push({
-          url: normalizedUrl,
-          anchor,
-        });
+        if (genericAnchorDetails.length < MAX_DETAIL_ENTRIES) {
+          genericAnchorDetails.push({ url: normalizedUrl, anchor });
+        }
       }
 
       if (resolvedUrl.protocol === "http:") {
         httpInternalLinks++;
 
-        httpInternalDetails.push({
-          url: normalizedUrl,
-          anchor,
-        });
+        if (httpInternalDetails.length < MAX_DETAIL_ENTRIES) {
+          httpInternalDetails.push({ url: normalizedUrl, anchor });
+        }
       }
     } else {
       externalLinks++;
@@ -183,8 +186,9 @@ export function analyzeInternalLinks(
     httpInternalLinks,
     selfLinks,
 
-    internalUrls: Array.from(
-      internalUrlCounts.keys(),
+    internalUrls: Array.from(internalUrlCounts.keys()).slice(
+      0,
+      MAX_DETAIL_ENTRIES,
     ),
 
     emptyAnchorDetails,

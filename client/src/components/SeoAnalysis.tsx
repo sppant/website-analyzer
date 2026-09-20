@@ -192,7 +192,12 @@ function SeoAnalysis({ seo, section = "on-page" }: SeoAnalysisProps) {
           <p>{seo.sitemapXml ? "✓ Found" : "Missing"}</p>
 
           {seo.sitemapXml && (
-            <small>{seo.sitemapUrlCount} URLs discovered</small>
+            <small>
+              {seo.sitemapUrl ? `${formatLinkUrl(seo.sitemapUrl)} · ` : ""}
+              {seo.sitemapType === "index"
+                ? "Sitemap index"
+                : `${seo.sitemapUrlCount} URLs discovered`}
+            </small>
           )}
         </article>
       </div>

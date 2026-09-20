@@ -16,8 +16,9 @@ type ResultsDashboardProps = {
     issues: Parameters<typeof sortIssues>[0];
     seo: Parameters<typeof SeoAnalysis>[0]["seo"];
   };
-  onReanalyze: () => void;
-  isLoading: boolean;
+  /** Omitted for read-only views (e.g. a stored analysis). */
+  onReanalyze?: () => void;
+  isLoading?: boolean;
 };
 
 type Tab =
@@ -31,7 +32,7 @@ type Tab =
 function ResultsDashboard({
   result,
   onReanalyze,
-  isLoading,
+  isLoading = false,
 }: ResultsDashboardProps) {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 

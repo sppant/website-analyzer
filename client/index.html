@@ -2,14 +2,66 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      This SPA serves the analyzer tool (/app), pricing (/pricing) and every
+      auth / dashboard route. The public marketing homepage and content live in
+      the Next.js app (web/). Per-route <head> tags are managed client-side by
+      src/components/Seo.tsx; the values below are the fallback for non-JS
+      scrapers and default to noindex — Seo.tsx opts the indexable routes
+      (e.g. /pricing) back in.
+    -->
+    <title>SEO Analyzer Tool | SEO Opportunity Analyzer</title>
     <meta
       name="description"
-      content="Find SEO opportunities and improve your website with the WebXDevelop SEO Opportunity Analyzer."
+      content="Run a free SEO analysis of any page. Check page titles, meta descriptions, headings, technical SEO, Core Web Vitals and social tags, then get a prioritized list of fixes."
     />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://seo.webxdevelop.com/app" />
 
-    <title>SEO Opportunity Analyzer | WebXDevelop</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SEO Opportunity Analyzer" />
+    <meta property="og:title" content="SEO Analyzer Tool" />
+    <meta
+      property="og:description"
+      content="Analyze any page's SEO in seconds and get a prioritized list of fixes. Free, no signup."
+    />
+    <meta property="og:url" content="https://seo.webxdevelop.com/app" />
+    <meta property="og:image" content="https://seo.webxdevelop.com/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SEO Analyzer Tool" />
+    <meta
+      name="twitter:description"
+      content="Analyze any page's SEO in seconds and get a prioritized list of fixes. Free, no signup."
+    />
+    <meta name="twitter:image" content="https://seo.webxdevelop.com/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://seo.webxdevelop.com/#organization",
+            "name": "WebXDevelop",
+            "url": "https://seo.webxdevelop.com/",
+            "logo": "https://seo.webxdevelop.com/logo.png",
+            "email": "hello@webxdevelop.com",
+            "sameAs": ["https://www.linkedin.com/in/spyros-p-a12698138/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://seo.webxdevelop.com/#website",
+            "url": "https://seo.webxdevelop.com/",
+            "name": "SEO Opportunity Analyzer",
+            "publisher": { "@id": "https://seo.webxdevelop.com/#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

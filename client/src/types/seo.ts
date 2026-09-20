@@ -64,6 +64,9 @@ export type SeoData = {
   robotsTxtBlocksAll: boolean;
   sitemapXml: boolean;
   sitemapUrlCount: number;
+  /** Optional — absent on analyses stored before sitemap discovery was added. */
+  sitemapUrl?: string | null;
+  sitemapType?: "urlset" | "index" | null;
   ogTitle: string | null;
   ogDescription: string | null;
   ogImage: string | null;

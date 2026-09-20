@@ -1,20 +1,9 @@
 import type { FastifyPluginAsync } from "fastify";
 
-import { analyzeSeo, calculateSeoScore } from "../analyzer/seoRules.js";
-
-import { fetchWithTimeout } from "../services/fetcher.js";
-import { extractSeoData } from "../services/seoAnalyzer.js";
-import { analyzeRobotsTxt } from "../services/robotsAnalyzer.js";
-import { analyzeSitemap } from "../services/sitemapAnalyzer.js";
-import { analyzeInternalLinks } from "../services/internalLinkAnalyzer.js";
-import { analyzePageSpeed } from "../services/pageSpeedAnalyzer.js";
-
-import { readResponseWithLimit } from "../utils/readResponse.js";
-import { isSafeUrl } from "../utils/safeUrl.js";
-
-const MAX_HTML_BYTES = 5 * 1024 * 1024;
-const MAX_ROBOTS_BYTES = 1 * 1024 * 1024;
-const MAX_SITEMAP_BYTES = 5 * 1024 * 1024;
+import { planFor } from "../analyses/analysis-plugin.js";
+import { AnalysisLimitError } from "../analyses/analysis-service.js";
+import { AnalysisError, runAnalysis } from "../analyzer/runAnalysis.js";
+import { analysisLimitForPlan } from "../billing/plan.js";
 
 export const analyzeRoute: FastifyPluginAsync = async (app) => {
   app.post(
@@ -44,141 +33,98 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
         });
       }
 
+      // Reject a syntactically invalid URL here so the analyzer engine never
+      // throws a raw TypeError that would surface as a 500.
       try {
-        const parsedUrl = new URL(url);
-
-        if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+        const parsed = new URL(url.trim());
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
           return reply.status(400).send({
             error: "Only HTTP and HTTPS URLs are supported.",
           });
         }
+      } catch {
+        return reply.status(400).send({
+          error: "Enter a valid URL, including https://",
+        });
+      }
 
-        if (parsedUrl.username || parsedUrl.password) {
-          return reply.status(400).send({
-            error: "URLs containing credentials are not supported.",
-          });
-        }
+      const projectIdRaw =
+        "projectId" in body ? (body as { projectId?: unknown }).projectId : null;
+      const projectId =
+        typeof projectIdRaw === "string" && projectIdRaw ? projectIdRaw : null;
 
-        if (!(await isSafeUrl(parsedUrl.href))) {
-          return reply.status(400).send({
-            error: "This URL cannot be analyzed.",
-          });
-        }
+      const onPageSpeedError = (error: unknown) => {
+        app.log.warn(
+          {
+            error:
+              error instanceof Error
+                ? {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack,
+                  }
+                : String(error),
+          },
+          "PageSpeed analysis failed",
+        );
+      };
 
-        const response = await fetchWithTimeout(parsedUrl.href);
+      // The user's plan is resolved here (the authorization layer), never by
+      // the analyzer engine. `plan` stays null for anonymous requests.
+      let plan: string | null = null;
 
-        if (!response) {
-          return reply.status(400).send({
-            error: "The website did not respond within the allowed time.",
-          });
-        }
+      try {
+        if (request.user && app.analysisService) {
+          const resolvedPlan = await planFor(app, request.user.id);
+          plan = resolvedPlan;
 
-        if (!response.ok) {
-          return reply.status(400).send({
-            error: `Website returned HTTP ${response.status}`,
-          });
-        }
-
-        const html = await readResponseWithLimit(response, MAX_HTML_BYTES);
-
-        if (html === null) {
-          return reply.status(400).send({
-            error: "The website response is too large to analyze.",
-          });
-        }
-
-        let pageSpeed;
-
-        try {
-          pageSpeed = await analyzePageSpeed(parsedUrl.href);
-        } catch (error) {
-          app.log.warn(
-            {
-              error:
-                error instanceof Error
-                  ? {
-                      name: error.name,
-                      message: error.message,
-                      stack: error.stack,
-                    }
-                  : String(error),
-            },
-            "PageSpeed analysis failed",
-          );
-
-          pageSpeed = {
-            performanceScore: null,
-            lcp: null,
-            cls: null,
-            inp: null,
-            fcp: null,
-            ttfb: null,
-          };
-        }
-
-        const seo = {
-          ...extractSeoData(html, parsedUrl),
-          internalLinks: analyzeInternalLinks(html, parsedUrl),
-          pageSpeed,
-        };
-
-        const origin = parsedUrl.origin;
-
-        const robotsUrl = new URL("/robots.txt", origin).href;
-
-        const sitemapUrl = new URL("/sitemap.xml", origin).href;
-
-        const [robotsResponse, sitemapResponse] = await Promise.all([
-          fetchWithTimeout(robotsUrl, 5000),
-          fetchWithTimeout(sitemapUrl, 5000),
-        ]);
-
-        if (robotsResponse?.ok) {
-          const robotsText = await readResponseWithLimit(
-            robotsResponse,
-            MAX_ROBOTS_BYTES,
-          );
-
-          if (robotsText !== null) {
-            Object.assign(seo, analyzeRobotsTxt(robotsText));
-          }
-        }
-
-        if (sitemapResponse?.ok) {
-          const sitemapText = await readResponseWithLimit(
-            sitemapResponse,
-            MAX_SITEMAP_BYTES,
-          );
-
-          if (sitemapText !== null) {
-            Object.assign(
-              seo,
-              analyzeSitemap(
-                sitemapText,
-                sitemapResponse.headers.get("content-type") || "",
-              ),
+          // A projectId is only honoured when it belongs to the caller.
+          if (projectId && app.projectService) {
+            const owned = await app.projectService.get(
+              request.user.id,
+              projectId,
             );
+            if (!owned) {
+              return reply
+                .status(404)
+                .send({ error: "Project not found." });
+            }
           }
+
+          const extraUnits = app.getExtraUsageUnits
+            ? await app.getExtraUsageUnits(request.user.id)
+            : 0;
+
+          return await app.analysisService.runForUser(request.user.id, url, {
+            limit: analysisLimitForPlan(resolvedPlan),
+            extraUnits,
+            projectId: app.projectService ? projectId : null,
+            onPageSpeedError,
+          });
         }
 
-        const issues = analyzeSeo(seo);
-        const score = calculateSeoScore(issues);
-
-        return {
-          url: parsedUrl.href,
-          statusCode: response.status,
-          seo,
-          score,
-          issues,
-        };
+        return await runAnalysis(url, { onPageSpeedError });
       } catch (error) {
-        app.log.error(error);
+        if (error instanceof AnalysisLimitError) {
+          return reply.status(error.statusCode).send({
+            error: error.message,
+            code: error.code,
+            plan: plan ?? "free",
+          });
+        }
+
+        if (error instanceof AnalysisError) {
+          return reply.status(error.statusCode).send({
+            error: error.message,
+          });
+        }
+
+        // Unexpected failure: log the detail server-side, return a safe generic
+        // message so internal errors never leak to the client.
+        app.log.error({ err: error }, "Unexpected error while analyzing a URL");
 
         return reply.status(500).send({
-          error:
-            error instanceof Error
-              ? error.message
-              : "Unable to analyze the website.",
+          error: "Unable to analyze the website. Please try again.",
         });
       }
     },

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import Analytics from "./Analytics";
+import { Button } from "./ui/Button";
 
 const CONSENT_KEY = "analytics-consent";
 
@@ -46,21 +48,21 @@ function CookieConsent() {
             </div>
 
             <div className="cookie-actions">
-              <button
-                type="button"
-                className="cookie-reject"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => handleConsent("rejected")}
               >
                 Reject
-              </button>
+              </Button>
 
-              <button
-                type="button"
-                className="cookie-accept"
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => handleConsent("accepted")}
               >
                 Accept Analytics
-              </button>
+              </Button>
             </div>
           </div>
         </aside>

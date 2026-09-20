@@ -38,6 +38,13 @@ function HowItWorks() {
           </p>
         </article>
       </div>
+
+      <p className="how-it-works-footnote">
+        New to SEO? Read the <a href="/blog">SEO guides</a> for plain-English
+        explanations of every check, or{" "}
+        <a href="/serp-preview">preview your Google snippet</a> to see how
+        your page looks in search results.
+      </p>
     </div>
   );
 }

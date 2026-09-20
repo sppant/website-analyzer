@@ -1,5 +1,12 @@
 import * as cheerio from "cheerio";
 
+/**
+ * Upper bound on entries kept in any per-page detail list. A hostile page with
+ * hundreds of thousands of elements can't inflate the stored result / API
+ * response — the accompanying total count is always exact.
+ */
+const MAX_DETAIL_ENTRIES = 200;
+
 export function extractSeoData(html: string, url: URL) {
   const $ = cheerio.load(html);
 
@@ -27,6 +34,7 @@ export function extractSeoData(html: string, url: URL) {
     src: string;
     alt: string | null;
   }[] = [];
+  let imagesMissingAlt = 0;
 
   images.each((_, element) => {
     const alt = $(element).attr("alt");
@@ -67,14 +75,15 @@ export function extractSeoData(html: string, url: URL) {
     }
 
     if (alt === undefined || alt.trim() === "") {
-      imagesMissingAltDetails.push({
-        src,
-        alt: alt ?? null,
-      });
+      imagesMissingAlt += 1;
+      if (imagesMissingAltDetails.length < MAX_DETAIL_ENTRIES) {
+        imagesMissingAltDetails.push({
+          src,
+          alt: alt ?? null,
+        });
+      }
     }
   });
-
-  const imagesMissingAlt = imagesMissingAltDetails.length;
 
   const ogTitle =
     $('meta[property="og:title"]').attr("content")?.trim() || null;
@@ -114,6 +123,8 @@ export function extractSeoData(html: string, url: URL) {
 
     sitemapXml: false,
     sitemapUrlCount: 0,
+    sitemapUrl: null,
+    sitemapType: null,
 
     ogTitle,
     ogDescription,

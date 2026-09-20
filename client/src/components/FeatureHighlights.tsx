@@ -20,6 +20,10 @@ function FeatureHighlights() {
         <strong>✓</strong>
         Prioritized opportunities
       </span>
+
+      <a href="/features" className="feature-highlights-link">
+        See all SEO checks
+      </a>
     </div>
   );
 }

@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
           <a href="/" className="footer-logo">
-            <img src="/favicon.png" alt="WebXDevelop" />
+            <img src="/favicon.png" alt="" width={28} height={28} />
             <span>WebXDevelop</span>
           </a>
         </div>
@@ -12,9 +14,12 @@ function Footer() {
         <nav className="footer-links" aria-label="Footer navigation">
           <div>
             <h3>Explore</h3>
-            <a href="/#features">Features</a>
-            <a href="/#how-it-works">How It Works</a>
-            <a href="/legal">Privacy & Terms</a>
+            <a href="/features">Features</a>
+            <a href="/serp-preview">SERP Preview</a>
+            <Link to="/pricing">Pricing</Link>
+            <a href="/blog">Blog</a>
+            <a href="/about">About</a>
+            <a href="/legal">Privacy &amp; Terms</a>
           </div>
 
           <div>
