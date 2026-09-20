@@ -56,6 +56,10 @@ export type SeoData = {
 
   imageCount: number;
   imagesMissingAlt: number;
+  imagesMissingAltDetails: {
+    src: string;
+    alt: string | null;
+  }[];
 
   https: boolean;
 
@@ -64,6 +68,10 @@ export type SeoData = {
   robotsTxtBlocksAll: boolean;
   sitemapXml: boolean;
   sitemapUrlCount: number;
+  /** URL of the sitemap that was discovered and validated, or null. */
+  sitemapUrl: string | null;
+  /** `"urlset"` for a regular sitemap, `"index"` for a sitemap index, null if none. */
+  sitemapType: "urlset" | "index" | null;
 
   ogTitle: string | null;
   ogDescription: string | null;

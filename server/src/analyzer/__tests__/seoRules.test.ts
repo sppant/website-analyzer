@@ -26,6 +26,7 @@ function createSeoData(
 
     imageCount: 5,
     imagesMissingAlt: 0,
+    imagesMissingAltDetails: [],
 
     https: true,
 
@@ -35,6 +36,8 @@ function createSeoData(
 
     sitemapXml: true,
     sitemapUrlCount: 10,
+    sitemapUrl: "https://example.com/sitemap.xml",
+    sitemapType: "urlset",
 
     ogTitle: "Example Website",
     ogDescription: "Example description",
