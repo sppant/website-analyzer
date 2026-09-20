@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# --- API → Passenger / Node (Fastify server in ./dist, started by _passenger.cjs) ---
+RewriteRule ^api(?:/|$) - [L]
+
+# --- React SPA (analyzer tool + auth/dashboard) — every /app/* route loads its shell ---
+# Real assets under /app/assets/ fall through (they're -f); everything else → the shell.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^app(?:/.*)?$ /app/index.html [L]
+
+# --- Next.js static export: pretty URLs (/seo-audit → /seo-audit.html) ---
+# Checked before the -d rule so /blog serves blog.html, not the blog/ directory.
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ /$1.html [L]
+
+# --- Real files and directories served as-is (/_next/, favicons, robots.txt, sitemap.xml, /) ---
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# --- Anything else → Next.js 404 ---
+RewriteRule ^$ /index.html [L]
+RewriteRule ^ /404.html [L]

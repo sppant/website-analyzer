@@ -1,0 +1,16 @@
+# Local development database only. Production uses a managed PostgreSQL instance.
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: website_analyzer
+    ports:
+      - "5432:5432"
+    volumes:
+      - website_analyzer_pgdata:/var/lib/postgresql/data
+
+volumes:
+  website_analyzer_pgdata:
