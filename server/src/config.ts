@@ -31,6 +31,8 @@ export type AppConfig = {
   stripe: StripeConfig | null;
   /** SMTP config, or `null` when not configured (development only). */
   smtp: SmtpConfig | null;
+  /** Sentry DSN for error reporting, or `null` when not configured. */
+  sentryDsn: string | null;
 };
 
 export function loadConfig(): AppConfig {
@@ -72,6 +74,7 @@ export function loadConfig(): AppConfig {
     appUrl: resolveAppUrl(isProduction),
     stripe: resolveStripeConfig(),
     smtp,
+    sentryDsn: process.env.SENTRY_DSN?.trim() || null,
   };
 }
 

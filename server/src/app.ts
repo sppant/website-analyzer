@@ -2,6 +2,7 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
 import Fastify from "fastify";
+import pino from "pino";
 import Stripe from "stripe";
 
 import {
@@ -39,6 +40,7 @@ import { createDatabase } from "./db/client.js";
 import { analyzeRoute } from "./routes/analyze.js";
 import { createConsoleMailer, type Mailer } from "./services/mailer.js";
 import { createSmtpMailer } from "./services/smtp-mailer.js";
+import { createSentryStream } from "./observability/sentry.js";
 
 const PRODUCTION_ORIGIN = "https://seo.webxdevelop.com";
 const DEV_ORIGIN = "http://localhost:5173";
@@ -79,6 +81,8 @@ export type BuildAppOptions = {
   stripe?: StripeConfig;
   /** Inject a fake gateway in tests. */
   stripeGateway?: StripeGateway;
+  /** Sentry DSN (from env). When omitted, errors are logged but not reported. */
+  sentryDsn?: string;
 };
 
 export async function buildApp(options: BuildAppOptions = {}) {
@@ -86,7 +90,15 @@ export async function buildApp(options: BuildAppOptions = {}) {
     options.isProduction ?? process.env.NODE_ENV === "production";
 
   const app = Fastify({
-    logger: true,
+    logger: options.sentryDsn
+      ? {
+          level: "info",
+          stream: pino.multistream([
+            { stream: process.stdout },
+            { level: "error", stream: createSentryStream() },
+          ]),
+        }
+      : true,
     // In production the server runs behind a same-host reverse proxy, so trust
     // X-Forwarded-* only from loopback to get the real client IP for rate
     // limiting. External clients cannot spoof a loopback source address.

@@ -2,8 +2,11 @@ import "dotenv/config";
 
 import { buildApp } from "./app.js";
 import { loadConfig } from "./config.js";
+import { initSentry } from "./observability/sentry.js";
 
 const config = loadConfig();
+
+initSentry(config.sentryDsn);
 
 const app = await buildApp({
   isProduction: config.isProduction,
@@ -12,6 +15,7 @@ const app = await buildApp({
   appUrl: config.appUrl,
   smtp: config.smtp ?? undefined,
   stripe: config.stripe ?? undefined,
+  sentryDsn: config.sentryDsn ?? undefined,
 });
 
 try {

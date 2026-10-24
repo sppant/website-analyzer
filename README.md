@@ -149,12 +149,18 @@ APP_URL=http://localhost:5173        # optional; base URL of the frontend
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRICE_PRO=price_...           # a recurring $9/month USD Price
+
+SENTRY_DSN=                          # optional — server-side error reporting
 ```
 
 - `PAGESPEED_API_KEY`, `SESSION_SECRET`, and the `STRIPE_*` values are **server-side only** — never expose them through `VITE_*` / the client bundle.
 - `DATABASE_URL` points at PostgreSQL (see [Database](#database)).
 - `SESSION_SECRET` signs the session cookie. Use a long random value in production.
 - The `STRIPE_*` vars are optional. With none set, billing endpoints are disabled and every account is Free. Set all three (partial config is rejected at startup). See [Billing](#billing).
+- `SENTRY_DSN` is optional. With it unset, errors are still logged (stdout/the
+  process log) but not reported anywhere. When set, every `error`-level log
+  line — including caught errors in the Stripe webhook handler and the
+  analyzer route — is also sent to Sentry (`server/src/observability/sentry.ts`).
 
 For production deployments, configure these through the hosting platform's environment-variable configuration rather than committing a `.env` file.
 
